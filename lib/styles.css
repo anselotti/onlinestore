@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap');
+
+body {
+    background-color: rgb(244, 244, 244);
+    font-family: Releway;
+    font-size: 1.0 rem;
+    line-height: 1,25;
+}
+
+h1 {
+    font-size: 3rem; 
+    font-weight: bold; 
+    letter-spacing: -2;
+    line-height: 1; 
+    text-align: left;
+    color: #2C4A52;
+    
+    
+}
+
+h2 {
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 30px; 
+    font-weight: 300; 
+    line-height: 32px;
+    text-align: left; 
+}
+
+h3 {
+
+    font-family: 'Open Sans', sans-serif; 
+    font-size: 100px; 
+    font-weight: 300; 
+    text-align: left; 
+}
+
+a {
+    color: #2C4A52;
+}
+
+a:hover {
+    color: #537072;
+}
+
+.navbar-custom {
+    background-color: #2C4A52;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}
+
+.offcanvas-custom {
+    background-color: #8e9b97;
+}
+
+#sidebar {
+    background-color: #8e9b97;
+    
+}
+
+#content {
+    padding: 0;
+}
+
+#footer {
+    text-align: center;
+    background-color: #2C4A52;
+    height: 50px;
+    color: white;
+}
+
+.btn {
+    background-color: #2C4A52;
+    border: none;
+    color: white;
+    padding: 12px 16px;
+    font-size: 20px;
+    cursor: pointer; 
+  }
+
+  
+
+  .btn:hover {
+    background-color: #537072;   
+}
+
+#cartbutton {
+    background-color: #f4ebdb;
+    border: none;
+    color:#537072;
+    padding: 12px 16px;
+    font-size: 20px;
+    cursor: pointer; 
+  }
+
+  #cartbutton:hover {
+    background-color: #8e9b97;
+    border: none;
+    color:#f4ebdb;
+    padding: 12px 16px;
+    font-size: 20px;
+    cursor: pointer; 
+  }
+
+  ul.cart-list {
+    list-style-type:decimal;
+  }
+
+  .answer {
+    font-size: medium;
+    color: green;
+  }
+
+  .fa-trash-custom {
+    background-color: transparent;
+    color: rgb(198, 62, 62);
+    border: 0;
+  }
+  .fa-trash-custom:hover {
+    color: #2C4A52;;
+  }
+
+  .card-custom:hover {
+    background-color: #f3efe9;
+
+  }
+
+  .lgc {
+    background-color: transparent;
+  }
+
+  .menu-button {
+    width: 100%;
+    padding: 5px;
+    padding-left: 20px;
+    color: #f4ebdb;
+    text-decoration: none;
+    font-size: x-large;
+    border: 1px solid #f4ebdb;
+    border-radius: 2px;
+    background-color: #537072;
+
+  }
+
+  .menu-button:hover {
+    width: 100%;
+    color: white;
+    text-decoration: none;
+    font-size: x-large;
+    border: 1px solid #f4ebdb;
+    border-radius: 2px;
+    background-color: #8e9b97;
+
+  }
+  
+
+  .carousel .item {
+    height: 300px;
+  }
+  
+  .item img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      min-height: 300px;
+  }
+
+  .p-5 {
+    padding: 0%!important;
+  }
+
+ #description {
+    padding-left: 8%;
+    padding-right: 8%;
+    padding-bottom: 8%;
+ }

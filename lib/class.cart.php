@@ -18,10 +18,6 @@ class Cart {
         $this->session_id = $session_id;
         $this->product_size = $product_size;
 
-    }
-
-
-
     // deleting data from the given table where id is given id
     public function delete() : bool {
 

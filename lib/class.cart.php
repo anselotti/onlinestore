@@ -22,7 +22,7 @@ class Cart {
 
 
 
-    // deleting data from the given table where id is given id
+    // deletes product from cart mysql-table <-- TO DO: code delete to main.class
     public function delete() : bool {
 
         
@@ -34,6 +34,7 @@ class Cart {
         
     }
 
+    // adds product to cart mysql-table <-- TO DO: code delete to main.class
     public function add() : bool {
 
         if ($this->sql->query("INSERT INTO cart (product_id, session_id, product_size) VALUES ('". $this->id ."', '".$this->session_id. "', '".$this->product_size. "')")) {
@@ -47,6 +48,7 @@ class Cart {
         }
     }
 
+    // gets all products from cart-table based on session_id. returns an array.
     public function getCart() : array {
 
         // Global keyword allows to use variables outside of function or method

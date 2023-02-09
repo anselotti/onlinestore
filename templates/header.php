@@ -4,6 +4,9 @@ require("lib/class.cart.php");
 
 $cart = new Cart(0, $sql, $session_id, 0);
 $cartproducts = $cart->getCart();
+$cart_total = count($cartproducts);
+
+
 
 ?>
 
@@ -18,22 +21,6 @@ $cartproducts = $cart->getCart();
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="lib/styles.css" rel="stylesheet">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
-    <style>
-      .bd-placeholder-img {
-        font-size: 1.125rem;
-        text-anchor: middle;
-        -webkit-user-select: none;
-        -moz-user-select: none;
-        user-select: none;
-      }
-
-      @media (min-width: 768px) {
-        .bd-placeholder-img-lg {
-          font-size: 3.5rem;
-        }
-      }
-    </style>
-</head>
 
 <body>
     <!-- Navbar -->
@@ -43,7 +30,7 @@ $cartproducts = $cart->getCart();
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a href="index.php" class="navbar-brand">Ramp Riot Online Store</a>
-            <a class="btn" id="cartbutton"><i class="fa fa-shopping-cart fa-2x" data-bs-toggle="modal" data-bs-target="#cartmodal"></i></a>
+            <a class="btn" id="cartbutton"><i id="cart-total" class="fa fa-shopping-cart fa-2x" data-bs-toggle="modal" data-bs-target="#cartmodal"></i></a>
         </div>
     </nav>
     <!-- CART-MODAL -->

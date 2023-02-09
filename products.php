@@ -16,7 +16,7 @@ $row = $products->getProducts();
 
     <h2 style="padding: 20px;">Select category from below:</h2>
     <div class="container" style="padding: 20px;">
-    <a class="btn btn-primary" id="cat-all" name="category" type="button">All</a>
+    <button class="btn btn-primary" id="cat-all" name="category" type="button">All</button>
     <button class="btn btn-primary" id="cat-skate" name="category" type="button">Skateboards</button>
     <button class="btn btn-primary" id="cat-cloth" name="category" type="button">Clothing</button>
     <button class="btn btn-primary" id="cat-shoes" name="category" type="button">Shoes</button>

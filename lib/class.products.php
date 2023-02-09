@@ -36,9 +36,9 @@ class Products {
         return $product_array;
     }
 
+    // returns products based on given category-name
     public function getCategory() : array {
 
-        // Global keyword allows to use variables outside of function or method
         global $sql;
         
         // Setting all the produts to an array

@@ -139,6 +139,7 @@ require('templates/header.php');
                                 var product_id = document.getElementById("product_id_" + <?= $row['id']; ?>).value;
                                 var session_id = document.getElementById("session_id_" + <?= $row['id']; ?>).value;
                                 var product_size = document.getElementById("form-select" + <?= $row['id']; ?>).value;
+                                var cart_total = document.getElementById("cart-total");
 
                                 fetch('tocart_ajax.php', {
                                     method: 'POST', // Send as POST
@@ -149,7 +150,8 @@ require('templates/header.php');
                                     body: JSON.stringify({
                                         product_id: product_id,
                                         session_id: session_id,
-                                        product_size: product_size
+                                        product_size: product_size,
+                                        cart_total: cart_total
                                     }) // Sending JSON-data to server
                                 }).then(function(response) {
                                     // when then-promise has been succesful parse to json

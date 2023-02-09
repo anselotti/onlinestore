@@ -12,8 +12,8 @@ $session_id = $json["session_id"];
 $product_id = $json["product_id"];
 $product_size = $json["product_size"];
 
-$cart = new Cart($product_id, $sql, $session_id, $product_size);
 
+$cart = new Cart($product_id, $sql, $session_id, $product_size);
 
 if ($product_size == 'Size') {
 

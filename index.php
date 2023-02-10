@@ -48,6 +48,7 @@ require('templates/header.php');
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
+                    
                 </div>           
 
                 <div class="row" style="padding: 20px;">
@@ -112,22 +113,26 @@ require('templates/header.php');
                                         ?>
                                         <button class="btn btn-primary" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">Add to basket</button>
                                         <p class="answer" id="answer<?= $row['id']; ?>">
+                                        <!-- Foreach check if this product is already in cart and show that on the card. -->
                                             <?php
                                             foreach ($cartproducts as $key => $value) {
 
                                                 if ($row['id'] === $value['product_id']) {
                                                     echo '<i class="fa fa-check-circle-o" aria-hidden="true"></i> In basket';
+                                                    break; // breaks when first match found otherwise it prints as many times as there are matches found 
                                                 }
                                             }
 
                                             ?>
                                         </p>
                                     </form>
+                                    
                                 </div>
                             </div>
                         </div>
                         <!-- Json for adding products to the cart -->
                         <script>
+   
                             var submit = document.getElementById("add" + <?= $row['id']; ?>);
 
                             submit.onclick = function() {
@@ -153,9 +158,15 @@ require('templates/header.php');
                                     return response.json();
                                 }).then(function(myJson) {
                                     // when then-promise has been succesful prints json
-                                    answer.innerHTML = myJson;
+                                    answer.innerHTML = myJson;                                                   
                                 });
+                                
                             }
+
+                            // Updates cart-icon's total number when content clicked. !!! TO DO: not good code, but gotta find better way
+                            $("#content").click(function() {
+                                $("#cart-total").load("cart_total.php");
+                            });
 
 
 
@@ -164,6 +175,7 @@ require('templates/header.php');
                     <?php
                     }
                     ?>
+                        
 
                         <a href="products.php" style="text-align: center;" class="menu-button"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Check out our wide demand for skateboarding products.</a>
 

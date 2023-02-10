@@ -116,6 +116,11 @@ $imgurl = $row_p['imgurl'];
       answer.innerHTML = myJson;
     });
   }
+
+  $("#add").click(function() {
+    $("#cart-total").load("cart_total.php");
+  });
+  
 </script>
 
 </div>

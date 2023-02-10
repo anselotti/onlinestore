@@ -4,9 +4,7 @@ require("lib/class.cart.php");
 
 $cart = new Cart(0, $sql, $session_id, 0);
 $cartproducts = $cart->getCart();
-$cart_total = count($cartproducts);
-
-echo $cart_total;
+$carttotal = count($cartproducts);
 
 ?>
 
@@ -23,6 +21,7 @@ echo $cart_total;
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <body>
+    
     <!-- Navbar -->
     <nav class="navbar sticky-top navbar-dark navbar-custom">
         <div class="container-fluid">
@@ -30,7 +29,7 @@ echo $cart_total;
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a href="index.php" class="navbar-brand">Ramp Riot Online Store</a>
-            <a class="btn" id="cartbutton"><i class="fa fa-shopping-cart fa-2x" data-bs-toggle="modal" data-bs-target="#cartmodal"></i><div id="cart-total"></div></a>
+            <a class="btn" id="cartbutton"><i id="cart-total" class="fa fa-shopping-cart" data-bs-toggle="modal" data-bs-target="#cartmodal"> <?= $carttotal ?></i></a>
         </div>
     </nav>
     <!-- CART-MODAL -->

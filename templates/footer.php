@@ -1,14 +1,24 @@
 <!-- FOOTER STARTS -->
 <div class="container-fluid" id="footer">
-  <p>Tänne yhteystiedot ja copyrightsit</p>
+  <div class="row">
+    <div class="col-4">
+      Copyrights: Anssi Kosunen
+    </div>
+    <div id="footer-center" class="col-4">
+      Ramp Riot Online Store<br>
+      Koulutie 1, <br>
+      70100 KUOPIO, Finland<br>
+      040 123 4567
+    </div>
+    <div class="col-4" id="footer-right">
+      <a href="index.php">Home</a>
+      <a href="products.php">Products</a>
+      <a href="checkout.php">Checkout</a>
+    </div>    
+  </div>
 </div>
 <!-- FOOTER ENDS -->
 
-
-<!-- JAVASCRIPT AND JQUEY AJAX HERE-->
-
-
-<!-- Ajax to have items in cart on live -->
 <script>
   // updates cart on click event.
   $("#cartbutton").click(function() {
@@ -27,6 +37,19 @@
   });
   $("#cat-shoes").click(function() {
     $("#category-content").load("category_shoes.php");
+  });
+  $("#cat-shoes").click(function() {
+    $("#category-content").load("category_shoes.php");
+  });
+
+  // Updates cart-icon's total number when content clicked. !!! TO DO: not good code, but gotta find better way
+  $("#content").click(function() {
+    $("#cart-total").load("cart_total.php");
+  });
+
+  // Loads total items of cart to the navbar cart-icon
+  $(document).ready(function() {
+    $('#cart-total').load('cart_total.php');
   });
 
 

@@ -18,7 +18,7 @@ $cart = new Cart($cartid, $sql, 0, 0);
 
     } else {
 
-        echo json_encode('Error1');
+        echo json_encode('Error!');
 
     }
 ?>

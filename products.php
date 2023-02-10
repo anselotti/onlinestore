@@ -16,10 +16,10 @@ $row = $products->getProducts();
 
     <h2 style="padding: 20px;">Select category from below:</h2>
     <div class="container" style="padding: 20px;">
-    <button class="btn btn-primary" id="cat-all" name="category" type="button">All</button>
-    <button class="btn btn-primary" id="cat-skate" name="category" type="button">Skateboards</button>
-    <button class="btn btn-primary" id="cat-cloth" name="category" type="button">Clothing</button>
-    <button class="btn btn-primary" id="cat-shoes" name="category" type="button">Shoes</button>
+    <button class="btn btn-dark" id="cat-all" name="category" type="button">All</button>
+    <button class="btn btn-dark" id="cat-skate" name="category" type="button">Skateboards</button>
+    <button class="btn btn-dark" id="cat-cloth" name="category" type="button">Clothing</button>
+    <button class="btn btn-dark" id="cat-shoes" name="category" type="button">Shoes</button>
     </div>
 
     <div id="category-content">
@@ -49,6 +49,7 @@ $row = $products->getProducts();
                         <form><input id="session_id_<?= $row[$i]['id'] ?>" type="hidden" value="<?= $session_id; ?>">
                             <input id="product_id_<?= $row[$i]['id'] ?>" type="hidden" value="<?= $row[$i]['id']; ?>">
 
+                            <!--  -->
                             <?php
 
                             if ($row['category'] == 'shoes') { ?>
@@ -80,7 +81,7 @@ $row = $products->getProducts();
                             }
 
                             ?>
-                            <button class="btn btn-primary" id="add<?= $row[$i]['id'] ?>" name="add" type="button" class="card-link">Add to basket</button>
+                            <button class="btn btn-dark" id="add<?= $row[$i]['id'] ?>" name="add" type="button" class="card-link">Add to basket</button>
                             <p class="answer" id="answer<?= $row[$i]['id']; ?>">
                                 <?php
                                 foreach ($cartproducts as $key => $value) {

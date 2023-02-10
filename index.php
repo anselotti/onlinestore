@@ -48,13 +48,10 @@ require('templates/header.php');
                         <span class="carousel-control-next-icon" aria-hidden="true"></span>
                         <span class="visually-hidden">Next</span>
                     </button>
-                </div>
-
-                
-                <h2>The latest products in the market!</h2>
-                
+                </div>           
 
                 <div class="row" style="padding: 20px;">
+                    <h2>The latest products in the market!</h2>
                     <!--  -->
                     <?php
                     // Query gets all products to an array sorted from newest to oldest
@@ -139,7 +136,6 @@ require('templates/header.php');
                                 var product_id = document.getElementById("product_id_" + <?= $row['id']; ?>).value;
                                 var session_id = document.getElementById("session_id_" + <?= $row['id']; ?>).value;
                                 var product_size = document.getElementById("form-select" + <?= $row['id']; ?>).value;
-                                var cart_total = document.getElementById("cart-total");
 
                                 fetch('tocart_ajax.php', {
                                     method: 'POST', // Send as POST
@@ -151,7 +147,6 @@ require('templates/header.php');
                                         product_id: product_id,
                                         session_id: session_id,
                                         product_size: product_size,
-                                        cart_total: cart_total
                                     }) // Sending JSON-data to server
                                 }).then(function(response) {
                                     // when then-promise has been succesful parse to json
@@ -161,6 +156,9 @@ require('templates/header.php');
                                     answer.innerHTML = myJson;
                                 });
                             }
+
+
+
                         </script>
 
                     <?php

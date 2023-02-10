@@ -67,6 +67,8 @@ $title = 'cart';
                 $("#delete-item" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
                     $("#answer" + <?= $cart_row['product_id']; ?>).empty();
+                    // updates cart-button number
+                    $("#cart-total").load("cart_total.php");
                 });
 
             </script>

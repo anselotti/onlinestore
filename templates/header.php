@@ -6,7 +6,7 @@ $cart = new Cart(0, $sql, $session_id, 0);
 $cartproducts = $cart->getCart();
 $cart_total = count($cartproducts);
 
-
+echo $cart_total;
 
 ?>
 
@@ -30,7 +30,7 @@ $cart_total = count($cartproducts);
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a href="index.php" class="navbar-brand">Ramp Riot Online Store</a>
-            <a class="btn" id="cartbutton"><i id="cart-total" class="fa fa-shopping-cart fa-2x" data-bs-toggle="modal" data-bs-target="#cartmodal"></i></a>
+            <a class="btn" id="cartbutton"><i class="fa fa-shopping-cart fa-2x" data-bs-toggle="modal" data-bs-target="#cartmodal"></i><div id="cart-total"></div></a>
         </div>
     </nav>
     <!-- CART-MODAL -->
@@ -67,7 +67,7 @@ $cart_total = count($cartproducts);
                             <img src="logo.PNG" style="width: 200px; margin: auto; padding: 20px;">
                             <a href="index.php" class="menu-button" active><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                             <a href="products.php" class="menu-button"><i class="fa fa-th-large" aria-hidden="true"></i> Products</a>
-                            <a href="#" class="menu-button"><i class="fa fa-credit-card" aria-hidden="true"></i> Checkout</a>
+                            <a href="checkout.php" class="menu-button"><i class="fa fa-credit-card" aria-hidden="true"></i> Checkout</a>
                         </div>
                     </div>
                 </div>

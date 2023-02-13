@@ -71,6 +71,27 @@ class Cart {
     
     }
 
+    public function minus() : bool {
+        
+         // checks how many rows whit given session_id, id and product_size
+        $result = $this->sql->query("SELECT * FROM cart WHERE session_id = '$this->session_id' AND product_id = '$this->id' AND product_size = '$this->product_size'");
+
+        if($result->num_rows) { 
+
+            $row = $result->fetch_assoc(); 
+            $this->pcs = $row['pcs'];
+            $this->pcs--;
+
+            $this->sql->query("UPDATE cart SET pcs = '".$this->pcs."' WHERE session_id = '$this->session_id' AND product_id = '$this->id' AND product_size = '$this->product_size'");
+            return true;
+    
+        } else { // else adds one piece into the existing row
+            
+            return false;
+            
+        }
+}
+
     // gets all products from cart-table based on session_id. returns an array.
     public function getCart() : array {
 
@@ -78,7 +99,7 @@ class Cart {
         global $sql;
         
         // Setting all the produts to an array
-        $result = $sql->query("SELECT * FROM cart WHERE session_id='". $this->session_id ."'");
+        $result = $sql->query("SELECT * FROM cart WHERE pcs > 0 AND session_id='". $this->session_id ."'");
         $cart_array = [];
 
         // Getting data line by line and pushing it to an array

@@ -141,15 +141,6 @@ a:hover {
     list-style-type:decimal;
   }
 
-  .fa-trash-custom {
-    background-color: transparent;
-    color: rgb(198, 62, 62);
-    border: 0;
-  }
-  .fa-trash-custom:hover {
-    color: #2C4A52;;
-  }
-
   /* Styles for the answer when product added to cart */
   .answer {
     font-size: medium;
@@ -211,3 +202,45 @@ a:hover {
     padding-right: 8%;
     padding-bottom: 8%;
  }
+
+ /* Cart's buttons */
+.plus {
+  background-color: #537072;
+  font-size: x-large;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.plus:hover {
+  background-color: #f3efe9;
+  font-size: x-large;
+  color: #2C4A52;
+}
+
+.minus {
+  font-size: x-large;
+  background-color:#8e9b97;
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.minus:hover {
+  background-color: #f3efe9;
+  font-size: x-large;
+  color: #2C4A52;
+}
+
+.delete-item {
+  background-color: rgb(122, 47, 47);
+  color: white;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: x-large;
+}
+.delete-item:hover {
+  color: #2C4A52;
+  background-color: #f3efe9;
+  font-size: x-large;
+}

@@ -4,7 +4,8 @@ require("lib/class.cart.php");
 
 $cart = new Cart(0, $sql, $session_id, 0);
 $cartproducts = $cart->getCart();
-$carttotal = count($cartproducts);
+
+
 
 ?>
 
@@ -29,7 +30,7 @@ $carttotal = count($cartproducts);
                 <span class="navbar-toggler-icon"></span>
             </button>
             <a href="index.php" class="navbar-brand">Ramp Riot Online Store</a>
-            <a class="btn" id="cartbutton"><i id="cart-total" class="fa fa-shopping-cart" data-bs-toggle="modal" data-bs-target="#cartmodal"> <?= $carttotal ?></i></a>
+            <a class="btn" id="cartbutton"><i id="cart-total" class="fa fa-shopping-cart" data-bs-toggle="modal" data-bs-target="#cartmodal"> <?php require("cart_total.php") ?></i></a>
         </div>
     </nav>
     <!-- CART-MODAL -->

@@ -2,7 +2,12 @@
 session_start(); // Session starts
 $session_id = session_id();
 require("lib/db.php"); // Connection to database
-require("lib/class.cart.php");
+
+// checks if Cart is used before in code.
+if(!class_exists("Cart")) {
+    require("lib/class.cart.php");
+}
+
 $title = 'cart';
 
 ?>
@@ -20,16 +25,24 @@ $title = 'cart';
         // while loop shows all the added products based on session_id.   
         $sum = 0;
         $taxes = 0;
-        $cart_result = $sql->query("SELECT * FROM cart WHERE session_id = '$session_id'");
+        $cart_result = $sql->query("SELECT * FROM cart WHERE session_id = '$session_id' AND pcs > 0");
 
         while ($cart_row = $cart_result->fetch_assoc()) {
 
 
             $products = $sql->query("SELECT * FROM products WHERE id='" . $cart_row['product_id'] . "'");
             $productsrow = $products->fetch_assoc(); ?>
-            <li><?= $productsrow['name']; ?>, <?php echo $cart_row['product_size']; ?>, <b><?= $productsrow['price'] ?> €</b>, <?= $cart_row['pcs']; ?> pcs
+
+            <li><input type="hidden" id="session_id" value="<?= $session_id ?>">
+                <input type="hidden" id="product_id<?= $cart_row['id'] ?>" value="<?= $cart_row['product_id'] ?>"><?= $productsrow['name']; ?>, 
+                <input type="hidden" id="product_size<?= $cart_row['id'] ?>" value="<?= $cart_row['product_size'] ?>"><?php echo $cart_row['product_size']; ?>, 
+                <b><?= $productsrow['price'] ?> €</b>,
+                <input type="hidden" id="pcs<?= $cart_row['id'] ?>" value="<?= $cart_row['pcs'] ?>">
+                <p id="pcs_answer<?= $cart_row['id'] ?>"><?= $cart_row['pcs']; ?> pcs</p>
+                <a type="button" class="plus" id="plus<?= $cart_row['id'] ?>"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a> 
+                <a type="button" class="minus" id="minus<?= $cart_row['id'] ?>"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
                 <input type="hidden" id="id<?= $cart_row['id'] ?>" value="<?= $cart_row['id'] ?>">
-                <button class="fa fa-trash-o fa-trash-custom" type="button" id="delete-item<?= $cart_row['id'] ?>" name="delete-btn"></button>
+                <a class="delete-item" type="button" id="delete-item<?= $cart_row['id'] ?>" name="delete-btn"><i class="fa fa-trash-o" aria-hidden="true"></i></a>
             </li>
             <hr>
             <?php
@@ -38,8 +51,7 @@ $title = 'cart';
             ?>
 
             <script>
-
-
+            
                 var deleteItem = document.getElementById("delete-item" + <?= $cart_row['id']; ?>);
 
                 deleteItem.onclick = function() {
@@ -63,13 +75,88 @@ $title = 'cart';
                         console.log(myJson);
                     });
                 }
+
+                var plus = document.getElementById("plus" + <?= $cart_row['id']; ?>);
+
+                plus.onclick = function() {
+
+                    var pcs_answer = document.getElementById("pcs_answer" + <?= $cart_row['id']; ?>);
+                    var pcs = document.getElementById("pcs" + <?= $cart_row['id']; ?>).value;
+                    var product_id = document.getElementById("product_id" + <?= $cart_row['id']; ?>).value;
+                    var session_id = document.getElementById("session_id").value;
+                    var product_size = document.getElementById("product_size" + <?= $cart_row['id']; ?>).value;
+
+                    fetch('plus_ajax.php', {
+                        method: 'POST', // Send as POST
+                        headers: { // Tells headers to the server
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            product_id: product_id,
+                            session_id: session_id,
+                            product_size: product_size
+                        }) // Sending JSON-data to server
+                    }).then(function(response) {
+                        // when then-promise has been succesful parse to json
+                        return response.json();
+                    }).then(function(myJson) {
+                        // when then-promise has been succesful prints json
+                        pcs_answer.innerHTML = myJson;                                                   
+                    });
+                    
+                }
+
+                var minus = document.getElementById("minus" + <?= $cart_row['id']; ?>);
+
+                minus.onclick = function() {
+
+                    var pcs_answer2 = document.getElementById("pcs_answer" + <?= $cart_row['id']; ?>);
+                    var pcs2 = document.getElementById("pcs" + <?= $cart_row['id']; ?>).value;
+                    var product_id2 = document.getElementById("product_id" + <?= $cart_row['id']; ?>).value;
+                    var session_id2 = document.getElementById("session_id").value;
+                    var product_size2 = document.getElementById("product_size" + <?= $cart_row['id']; ?>).value;
+
+                    console.log(pcs2);
+                    console.log(product_id2);
+                    console.log(session_id2);
+                    console.log(product_size2);
+
+                    fetch('minus_ajax.php', {
+                        method: 'POST', // Send as POST
+                        headers: { // Tells headers to the server
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            product_id2: product_id2,
+                            session_id2: session_id2,
+                            product_size2: product_size2
+                        }) // Sending JSON-data to server
+                    }).then(function(response) {
+                        // when then-promise has been succesful parse to json
+                        return response.json();
+                    }).then(function(myJson) {
+                        // when then-promise has been succesful prints json
+                        pcs_answer2.innerHTML = myJson;                                                   
+                    });
+
+                    }
                 
                 // updates cart using ajax and deleting "answer" in the product-card
                 $("#delete-item" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
-                    $("#answer" + <?= $cart_row['product_id']; ?>).empty();
+                    $("#answer" + <?= $cart_row['product_id']; ?>).empty(); // cleans the answer-div
                     // updates cart-button number
                     $("#cart-total").load("cart_total.php");
+                });
+
+                $("#plus" + <?= $cart_row['id'] ?>).click(function() {
+                    $("#cartcontent").load("cart.php");
+                });
+
+                $("#minus" + <?= $cart_row['id'] ?>).click(function() {
+                    $("#cartcontent").load("cart.php");
                 });
 
             </script>

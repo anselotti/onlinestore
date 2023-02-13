@@ -22,18 +22,19 @@ $title = 'cart';
         $taxes = 0;
         $cart_result = $sql->query("SELECT * FROM cart WHERE session_id = '$session_id'");
 
-        while ($cart_row = $cart_result->fetch_assoc()) {        
+        while ($cart_row = $cart_result->fetch_assoc()) {
+
 
             $products = $sql->query("SELECT * FROM products WHERE id='" . $cart_row['product_id'] . "'");
             $productsrow = $products->fetch_assoc(); ?>
-            <li><?= $productsrow['name']; ?>, <?php echo $cart_row['product_size']; ?> , <b><?= $productsrow['price'] ?> €</b>
+            <li><?= $productsrow['name']; ?>, <?php echo $cart_row['product_size']; ?>, <b><?= $productsrow['price'] ?> €</b>, <?= $cart_row['pcs']; ?> pcs
                 <input type="hidden" id="id<?= $cart_row['id'] ?>" value="<?= $cart_row['id'] ?>">
                 <button class="fa fa-trash-o fa-trash-custom" type="button" id="delete-item<?= $cart_row['id'] ?>" name="delete-btn"></button>
             </li>
             <hr>
             <?php
-            $sum = $sum + $productsrow['price'];
-            $taxes = $taxes + $productsrow['tax'];
+            $sum = ($sum + $productsrow['price']) * $cart_row['pcs'];
+            $taxes = ($taxes + $productsrow['tax']) * $cart_row['pcs'];
             ?>
 
             <script>

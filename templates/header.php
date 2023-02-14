@@ -5,8 +5,6 @@ require("lib/class.cart.php");
 $cart = new Cart(0, $sql, $session_id, 0);
 $cartproducts = $cart->getCart();
 
-
-
 ?>
 
 <html>
@@ -22,6 +20,7 @@ $cartproducts = $cart->getCart();
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
 
 <body>
+    <div id="warning" style="background-color:brown; color: white; text-align:center;">This is a practice project, so you can place an order, but you do not need to pay the bill. :)</div>
     
     <!-- Navbar -->
     <nav class="navbar sticky-top navbar-dark navbar-custom">
@@ -64,7 +63,7 @@ $cartproducts = $cart->getCart();
                     </div>
                     <div class="offcanvas-body offcanvas-custom">
                         <div class="list-group" style="width:100%;">
-                            <img src="logo.PNG" style="width: 200px; margin: auto; padding: 20px;">
+                            <img src="logo.PNG" style="max-width: 100%; margin: auto; padding: 20px;">
                             <a href="index.php" class="menu-button" active><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                             <a href="products.php" class="menu-button"><i class="fa fa-th-large" aria-hidden="true"></i> Products</a>
                             <a href="checkout.php" class="menu-button"><i class="fa fa-credit-card" aria-hidden="true"></i> Checkout</a>

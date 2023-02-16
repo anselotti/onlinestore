@@ -4,6 +4,7 @@ $session_id = session_id();
 $title = 'Ramp Riot Online Store - Products';
 require('templates/header.php');
 require("lib/class.products.php");
+require("lib/functions.php");
 
 // creating $category so later it is possible to list products with given GET-category name
 $category = $_GET['category'];
@@ -68,6 +69,21 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
                             <form><input id="session_id_<?= $row[$i]['id'] ?>" type="hidden" value="<?= $session_id; ?>">
                                 <input id="product_id_<?= $row[$i]['id'] ?>" type="hidden" value="<?= $row[$i]['id']; ?>">
 
+                                <!-- Checks if the product found in stock using getStock-function -->
+                                <p style="color:brown;">
+                                    <?php
+
+                                    if(getStock($row[$i]['id'])) {
+
+                                        echo '
+                                        <i class="fa fa-exclamation-circle" aria-hidden="true"> <b>Out of stock.</b></i>
+                                        ';
+
+                                    } 
+
+                                    ?>
+                                </p>
+
                                 <!-- Checks what category and then shows the right size-type. -->
 
                                     <select id="form-select<?= $row[$i]['id'] ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
@@ -76,23 +92,29 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
                                         <?php
                                         $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $row[$i]['id'] . "'");
                                         while ($row_sizes = $result_sizes->fetch_assoc()) {
-                                            var_dump($row_sizes['size']);
+
                                             echo '<option value="' . $row_sizes['size'] . '">' . $row_sizes['size'] . '</option>';
+                                        
                                         } 
                                         ?>
+                                        
                                     </select>
                                 <button class="btn btn-dark" id="add<?= $row[$i]['id']; ?>" name="add" type="button">Add to basket</button>
                                 <p class="answer" id="answer<?= $row[$i]['id']; ?>">
                                     <?php
+
                                     foreach ($cartproducts as $key => $value) {
 
                                         if ($row[$i]['id'] === $value['product_id']) {
+
                                             echo '<i class="fa fa-check-circle-o" aria-hidden="true"></i> In basket';
+
                                         }
                                     }
 
                                     ?>
                                 </p>
+                                
                             </form>
                         </div>
                     </div>

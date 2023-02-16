@@ -3,6 +3,7 @@ session_start(); // Session starts
 $session_id = session_id();
 $title = 'Ramp Riot Online Store - Products';
 require('templates/header.php');
+require("lib/functions.php");
 
 // creating variables to use in dynamic pages
 $id = $_GET['id'];
@@ -38,6 +39,17 @@ $imgurl = $row_p['imgurl'];
         </p>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+
+          <?php
+
+          if (getStock($id)) {
+
+            echo '
+             <i class="fa fa-exclamation-circle" aria-hidden="true"> <b>Out of stock</b></i>
+             ';
+          }
+
+          ?>
 
         </div>
         <select id="form-select<?= $id ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">

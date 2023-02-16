@@ -79,13 +79,13 @@ $row = $products->getProducts();
             <b>If you have already account, sign in:</b>
             <div class="row g-3">
                 <div class="col-sm-6">
-                    <input type="email" class="form-control" id="email" placeholder="Email" aria-label="Number">
+                    <input type="email" class="form-control" id="email_login" placeholder="Email" aria-label="Number">
                 </div>
                 <div class="col-sm-6">
-                    <input type="password" class="form-control" id="password" placeholder="Password" aria-label="Password">
+                    <input type="password" class="form-control" id="password_login" placeholder="Password" aria-label="Password">
                 </div>
                 <div class="col-12">
-                    <button type="submit" class="btn btn-primary" id="submitOrder" >Sign in</button>
+                    <button type="submit" class="btn btn-primary" id="submit_login" >Sign in</button>
                 </div>
             </form>
 

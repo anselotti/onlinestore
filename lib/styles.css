@@ -83,7 +83,9 @@ a:hover {
     padding: 20px;
     padding-top: 50px;
     margin: auto;
-    font-size: larger;
+    font-size: medium;
+    text-align: center;
+    
 }
 
 #footer a {
@@ -95,7 +97,7 @@ a:hover {
 }
 
 #footer-right {
-  text-align: right;
+  text-align: center;
 }
 
 /* Bootstrap btn styles */
@@ -243,4 +245,16 @@ a:hover {
   color: #2C4A52;
   background-color: #f3efe9;
   font-size: x-large;
+}
+
+/* Sidebar-image */
+
+.center-image {
+  
+  display: block;
+  margin-left: auto;
+  margin-right: auto; 
+  margin-bottom: 20px;
+  max-width: 150px;
+
 }

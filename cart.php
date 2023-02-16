@@ -34,11 +34,11 @@ $title = 'cart';
             $productsrow = $products->fetch_assoc(); ?>
 
             <li><input type="hidden" id="session_id" value="<?= $session_id ?>">
-                <input type="hidden" id="product_id<?= $cart_row['id'] ?>" value="<?= $cart_row['product_id'] ?>"><?= $productsrow['name']; ?>, 
+                <input type="hidden" id="product_id<?= $cart_row['id'] ?>" value="<?= $cart_row['product_id'] ?>"><a href="product.php?id=<?=$cart_row['product_id']?>"><?= $productsrow['name']; ?>, 
                 <input type="hidden" id="product_size<?= $cart_row['id'] ?>" value="<?= $cart_row['product_size'] ?>"><?php echo $cart_row['product_size']; ?>, 
                 <b><?= $productsrow['price'] ?> €</b>,
                 <input type="hidden" id="pcs<?= $cart_row['id'] ?>" value="<?= $cart_row['pcs'] ?>">
-                <p id="pcs_answer<?= $cart_row['id'] ?>"><?= $cart_row['pcs']; ?> pcs</p>
+                <p id="pcs_answer<?= $cart_row['id'] ?>"><?= $cart_row['pcs']; ?> pcs</p></a>
                 <a type="button" class="plus" id="plus<?= $cart_row['id'] ?>"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a> 
                 <a type="button" class="minus" id="minus<?= $cart_row['id'] ?>"><i class="fa fa-minus-square-o" aria-hidden="true"></i></a>
                 <input type="hidden" id="id<?= $cart_row['id'] ?>" value="<?= $cart_row['id'] ?>">
@@ -138,7 +138,8 @@ $title = 'cart';
                         return response.json();
                     }).then(function(myJson) {
                         // when then-promise has been succesful prints json
-                        pcs_answer2.innerHTML = myJson;                                                   
+                        pcs_answer2.innerHTML = myJson;
+                        console.log(pcs_answer2)                                                   
                     });
 
                     }
@@ -151,10 +152,11 @@ $title = 'cart';
                     $("#cart-total").load("cart_total.php");
                 });
 
+                // updates cart-button number
                 $("#plus" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
                 });
-
+                // updates cart-button number
                 $("#minus" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
                 });

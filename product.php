@@ -38,44 +38,24 @@ $imgurl = $row_p['imgurl'];
         </p>
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
-        
-      </div>
-      <?php 
-          // Gives proper size range depends on product category
-          if ($category == 'shoes') {?>
 
-          <select id="form-select" class="form-select" aria-label="Default select example" style="width: 90%; margin-bottom: 10px;">
-              <option selected>Size</option>
-              <option value="39">39</option>
-              <option value="40">40</option>
-              <option value="41">41</option>
-          </select>
-          <?php 
-          } else if ($category == 'clothing') {
-              ?>
-              <select id="form-select" class="form-select" aria-label="Default select example" style="width: 90%; margin-bottom: 10px;">
-                  <option selected>Size</option>
-                  <option value="S">S</option>
-                  <option value="M">M</option>
-                  <option value="L">L</option>
-                  <option value="XL">XL</option>
-              </select>
-              <?php 
-          } else { ?>
-              
-              <select id="form-select" class="form-select" aria-label="Default select example" style="width: 90%; margin-bottom: 10px;">
-                  <option selected>Size</option>
-                  <option value="ONESIZE">ONESIZE</option>
-              </select>
-              <?php
-          }
-
-          ?>
-          <input id="product_id" value="<?= $id ?>" hidden>
-          <input id="session_id" value="<?= $session_id ?>" hidden>
-          <button id="add" type="button" class="btn btn-primary btn-lg px-4 me-md-2">Add to basket</button>
-          <p id="answer"></p>
         </div>
+        <select id="form-select<?= $id ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
+          <option selected>Size</option>
+          <!-- Prints sizes what are in the stock -->
+          <?php
+          $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $id . "'");
+          while ($row_sizes = $result_sizes->fetch_assoc()) {
+            var_dump($row_sizes['size']);
+            echo '<option value="' . $row_sizes['size'] . '">' . $row_sizes['size'] . '</option>';
+          }
+          ?>
+        </select>
+        <input id="product_id" value="<?= $id ?>" hidden>
+        <input id="session_id" value="<?= $session_id ?>" hidden>
+        <button id="add" type="button" class="btn btn-primary btn-lg px-4 me-md-2">Add to basket</button>
+        <p id="answer"></p>
+      </div>
     </div>
   </div>
 
@@ -88,40 +68,39 @@ $imgurl = $row_p['imgurl'];
   </div>
 
   <script>
-  var submit = document.getElementById("add");
+    var submit = document.getElementById("add");
 
-  submit.onclick = function() {
+    submit.onclick = function() {
 
-    var answer = document.getElementById("answer");
-    var product_id = document.getElementById("product_id").value;
-    var session_id = document.getElementById("session_id").value;
-    var product_size = document.getElementById("form-select").value;
+      var answer = document.getElementById("answer");
+      var product_id = document.getElementById("product_id").value;
+      var session_id = document.getElementById("session_id").value;
+      var product_size = document.getElementById("form-select").value;
 
-    fetch('tocart_ajax.php', {
-      method: 'POST', // Send as POST
-      headers: { // Tells headers to the server
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        product_id: product_id,
-        session_id: session_id,
-        product_size: product_size
-      }) // Sending JSON-data to server
-    }).then(function(response) {
-      // when then-promise has been succesful parse to json
-      return response.json();
-    }).then(function(myJson) {
-      // when then-promise has been succesful prints json
-      answer.innerHTML = myJson;
+      fetch('tocart_ajax.php', {
+        method: 'POST', // Send as POST
+        headers: { // Tells headers to the server
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          product_id: product_id,
+          session_id: session_id,
+          product_size: product_size
+        }) // Sending JSON-data to server
+      }).then(function(response) {
+        // when then-promise has been succesful parse to json
+        return response.json();
+      }).then(function(myJson) {
+        // when then-promise has been succesful prints json
+        answer.innerHTML = myJson;
+      });
+    }
+
+    $("#add").click(function() {
+      $("#cart-total").load("cart_total.php");
     });
-  }
-
-  $("#add").click(function() {
-    $("#cart-total").load("cart_total.php");
-  });
-  
-</script>
+  </script>
 
 </div>
 <!-- CONTENT ENDS -->

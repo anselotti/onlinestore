@@ -19,7 +19,7 @@ $cart = new Cart($product_id, $sql, $session_id, $product_size);
 
         $cart_tot = $sql->query("SELECT * FROM cart WHERE session_id = '$session_id' AND product_id = '$product_id' AND product_size = '$product_size'");
         $result = $cart_tot->fetch_assoc();
-    
+        
         echo json_encode($result['pcs'] . ' pcs');
     
     } else {

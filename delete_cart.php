@@ -4,7 +4,7 @@ require('lib/db.php');
 require('lib/class.cart.php');
 
 
-$cart = new Cart($_POST['id'], $sql, 0);
+$cart = new Cart($_POST['id'], $sql, 0, 0);
     
     if ($cart->delete()) {
 

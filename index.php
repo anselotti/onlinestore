@@ -5,6 +5,7 @@ $title = 'Ramp Riot Online Store - Index';
 require('templates/header.php');
 
 
+
 ?>
 
             <!-- CONTENT STARTS -->
@@ -65,7 +66,7 @@ require('templates/header.php');
 
                         <div class="col-sm-auto" style="margin: 10px;">
                             <div class="card card-custom" style="width: 18rem; height: 100%;">
-                                <img style="width: 100%; " src="<?= $row['imgurl']; ?>" class="card-img-top" alt="<?= $row['short_description'] ?>">
+                                <a href="product.php?id=<?=$row['id']?>"><img style="width: 100%; " src="<?= $row['imgurl']; ?>" class="card-img-top" alt="<?= $row['short_description'] ?>"></a>
                                 <div class="card-body">
                                     <a href="product.php?id=<?=$row['id']?>">
                                         <h5 class="card-title"><?= $row['name']; ?></h5>
@@ -79,38 +80,17 @@ require('templates/header.php');
                                 <div class="card-body">
                                     <form><input id="session_id_<?= $row['id'] ?>" type="hidden" value="<?= $session_id; ?>">
                                         <input id="product_id_<?= $row['id'] ?>" type="hidden" value="<?= $row['id']; ?>">
-                                        
-                                        <?php 
-
-                                        if ($row['category'] == 'shoes') {?>
-
-                                        <select id="form-select<?= $row['id']?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
+                                        <select id="form-select<?= $row['id'] ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
                                             <option selected>Size</option>
-                                            <option value="39">39</option>
-                                            <option value="40">40</option>
-                                            <option value="41">41</option>
-                                        </select>
-                                        <?php 
-                                        } else if ($row['category'] == 'clothing') {
-                                            ?>
-                                            <select id="form-select<?= $row['id']?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
-                                                <option selected>Size</option>
-                                                <option value="S">S</option>
-                                                <option value="M">M</option>
-                                                <option value="L">L</option>
-                                                <option value="XL">XL</option>
-                                            </select>
-                                            <?php 
-                                        } else { ?>
-                                            
-                                            <select id="form-select<?= $row['id']?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
-                                                <option selected>Size</option>
-                                                <option value="ONESIZE">ONESIZE</option>
-                                            </select>
+                                            <!-- Prints sizes what are in the stock -->
                                             <?php
-                                        }
-
-                                        ?>
+                                            $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $row['id'] . "'");
+                                            while ($row_sizes = $result_sizes->fetch_assoc()) {
+                                                var_dump($row_sizes['size']);
+                                                echo '<option value="' . $row_sizes['size'] . '">' . $row_sizes['size'] . '</option>';
+                                            } 
+                                            ?>
+                                        </select>
                                         <button class="btn btn-primary" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">Add to basket</button>
                                         <p class="answer" id="answer<?= $row['id']; ?>">
                                         <!-- Foreach check if this product is already in cart and show that on the card. -->

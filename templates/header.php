@@ -63,7 +63,7 @@ $cartproducts = $cart->getCart();
                     </div>
                     <div class="offcanvas-body offcanvas-custom">
                         <div class="list-group" style="width:100%;">
-                            <img src="logo.PNG" style="max-width: 100%; margin: auto; padding: 20px;">
+                            <a href="index.php"><img class="center-image" src="logo.PNG"></a>
                             <a href="index.php" class="menu-button" active><i class="fa fa-home" aria-hidden="true"></i> Home</a>
                             <a href="products.php" class="menu-button"><i class="fa fa-th-large" aria-hidden="true"></i> Products</a>
                             <a href="checkout.php" class="menu-button"><i class="fa fa-credit-card" aria-hidden="true"></i> Checkout</a>

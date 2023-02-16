@@ -51,7 +51,7 @@ $imgurl = $row_p['imgurl'];
           ?>
 
         </div>
-        <select id="form-select<?= $id ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
+        <select id="form-select" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
           <option selected>Size</option>
           <!-- Prints sizes what are in the stock -->
           <?php

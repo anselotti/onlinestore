@@ -23,10 +23,10 @@ for ($i = 0; $i < count($cartproducts); $i++) {
 
 if ($cart_total > 0) {
 
-echo $cart_total;
+echo ' ' . $cart_total;
 
 } else {
-    echo '0';
+    echo ' 0';
 }
 
 

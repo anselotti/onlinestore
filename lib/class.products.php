@@ -42,7 +42,7 @@ class Products {
         global $sql;
         
         // Setting all the produts to an array
-        $result = $sql->query("SELECT * FROM products WHERE category='". $this->category ."'");
+        $result = $sql->query("SELECT * FROM products WHERE category ='". $this->category ."'");
         $category_array = [];
 
         // Getting data line by line and pushing it to an array

@@ -4,7 +4,7 @@ $session_id = session_id();
 $title = 'Ramp Riot Online Store - Products';
 require('templates/header.php');
 require("lib/class.products.php");
-require("lib/functions.php");
+
 
 // creating $category so later it is possible to list products with given GET-category name
 $category = $_GET['category'];
@@ -33,6 +33,7 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
     <div class="container" style="padding: 20px;">
         <a href="products.php" class="btn btn-dark" id="cat-all" name="category" type="button">All</a>
         <?php
+            // Brings all the categories found in category-table
             $result_products = $sql->query("SELECT * FROM category");
 
             while ($row_products = $result_products->fetch_assoc()) {

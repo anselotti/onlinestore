@@ -76,7 +76,7 @@ $row = $products->getProducts();
             </form>
 
             <form class="row g-3">
-            <b>If you have already account, sign in:</b>
+            <b>If you already have an account please sign in:</b>
             <div class="row g-3">
                 <div class="col-sm-6">
                     <input type="email" class="form-control" id="email_login" placeholder="Email" aria-label="Number">

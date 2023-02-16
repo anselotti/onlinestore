@@ -3,7 +3,6 @@ session_start(); // Session starts
 $session_id = session_id();
 $title = 'Ramp Riot Online Store - Products';
 require('templates/header.php');
-require("lib/functions.php");
 
 // creating variables to use in dynamic pages
 $id = $_GET['id'];

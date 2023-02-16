@@ -1,6 +1,7 @@
 <?php
 require("lib/db.php"); // Connection to database
 require("lib/class.cart.php");
+require("lib/functions.php");
 
 $cart = new Cart(0, $sql, $session_id, 0);
 $cartproducts = $cart->getCart();

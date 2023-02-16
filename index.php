@@ -80,6 +80,19 @@ require('templates/header.php');
                                 <div class="card-body">
                                     <form><input id="session_id_<?= $row['id'] ?>" type="hidden" value="<?= $session_id; ?>">
                                         <input id="product_id_<?= $row['id'] ?>" type="hidden" value="<?= $row['id']; ?>">
+                                        <p style="color:brown;">
+                                            <?php
+
+                                            if(getStock($row['id'])) {
+
+                                                echo '
+                                                <i class="fa fa-exclamation-circle" aria-hidden="true"> <b>Out of stock.</b></i>
+                                                ';
+
+                                            } 
+
+                                            ?>
+                                        </p>
                                         <select id="form-select<?= $row['id'] ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
                                             <option selected>Size</option>
                                             <!-- Prints sizes what are in the stock -->

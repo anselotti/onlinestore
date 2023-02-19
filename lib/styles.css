@@ -144,8 +144,8 @@ a:hover {
 
   /* Styles for the answer when product added to cart */
   .answer {
-    font-size: medium;
-    color: green;
+    font-size: large;
+    color: red;
   }
 
 

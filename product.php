@@ -88,6 +88,11 @@ $imgurl = $row_p['imgurl'];
       var session_id = document.getElementById("session_id").value;
       var product_size = document.getElementById("form-select").value;
 
+      // returns "Select size" if product_size is not selected
+      if (product_size == "size") {
+        answer.innerHTML = "Select size";
+      } else {
+
       fetch('tocart_ajax.php', {
         method: 'POST', // Send as POST
         headers: { // Tells headers to the server
@@ -103,9 +108,11 @@ $imgurl = $row_p['imgurl'];
         // when then-promise has been succesful parse to json
         return response.json();
       }).then(function(myJson) {
-        // when then-promise has been succesful prints json
-        answer.innerHTML = myJson;
+        // when then-promise has been succesful modal opens
+        $("#getCode").html(myJson);
+        jQuery("#addedModal").modal('show');
       });
+    }
     }
 
     $("#add").click(function() {

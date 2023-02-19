@@ -99,15 +99,15 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
                                         ?>
                                         
                                     </select>
-                                <button class="btn btn-dark" id="add<?= $row[$i]['id']; ?>" name="add" type="button">Add to basket</button>
-                                <p class="answer" id="answer<?= $row[$i]['id']; ?>">
+                                <button class="btn btn-dark" id="add<?= $row[$i]['id']; ?>" name="add" type="button">Add to cart</button>
+                                <p class="answer" id="answer<?= $row[$i]['id']; ?>" style="text-align: center; color: white; background-color: #537072">
                                     <?php
 
                                     foreach ($cartproducts as $key => $value) {
 
                                         if ($row[$i]['id'] === $value['product_id']) {
 
-                                            echo '<i class="fa fa-check-circle-o" aria-hidden="true"></i> In basket';
+                                            echo '<p>In cart</p>';
 
                                         }
                                     }
@@ -130,6 +130,11 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
                         var product_id = document.getElementById("product_id_" + <?= $row[$i]['id']; ?>).value;
                         var session_id = document.getElementById("session_id_" + <?= $row[$i]['id']; ?>).value;
                         var product_size = document.getElementById("form-select" + <?= $row[$i]['id']?>).value;
+                        
+                        // returns "Select size" if product_size is not selected
+                        if (product_size == "size") {
+                            answer.innerHTML = "Select size";
+                        } else {
 
                         fetch('tocart_ajax.php', {
                             method: 'POST', // Send as POST
@@ -146,9 +151,12 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
                             // when then-promise has been succesful parse to json
                             return response.json();
                         }).then(function(myJson) {
-                            // when then-promise has been succesful prints json
-                            answer.innerHTML = myJson;
+                            // when then-promise has been succesful modal opens
+                            $("#getCode").html(myJson);
+                            jQuery("#addedModal").modal('show');
                         });
+                    }
+
                     }
 
                     // Updates cart-icon's total number when content clicked. !!! TO DO: not good code, but gotta find better way

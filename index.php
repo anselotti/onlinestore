@@ -93,7 +93,7 @@ require('templates/header.php');
                                     ?>
                                 </p>
                                         <select id="form-select<?= $row['id'] ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
-                                            <option selected>Size</option>
+                                            <option selected value="size">Size</option>
                                             <!-- Prints sizes what are in the stock -->
                                             <?php
                                             $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $row['id'] . "'");
@@ -103,20 +103,10 @@ require('templates/header.php');
                                             } 
                                             ?>
                                         </select>
-                                        <button class="btn btn-primary" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">Add to basket</button>
                                         <p class="answer" id="answer<?= $row['id']; ?>">
-                                        <!-- Foreach check if this product is already in cart and show that on the card. -->
-                                            <?php
-                                            foreach ($cartproducts as $key => $value) {
-
-                                                if ($row['id'] === $value['product_id']) {
-                                                    echo '<i class="fa fa-check-circle-o" aria-hidden="true"></i> In basket';
-                                                    break; // breaks when first match found otherwise it prints as many times as there are matches found 
-                                                }
-                                            }
-
-                                            ?>
+                                        <!-- Javascript returns "select size" if size is not selected -->                                        
                                         </p>
+                                        <button class="btn btn-primary" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">Add to basket</button>
                                     </form>
                                     
                                 </div>
@@ -133,6 +123,11 @@ require('templates/header.php');
                                 var product_id = document.getElementById("product_id_" + <?= $row['id']; ?>).value;
                                 var session_id = document.getElementById("session_id_" + <?= $row['id']; ?>).value;
                                 var product_size = document.getElementById("form-select" + <?= $row['id']; ?>).value;
+                                
+                                // returns "Select size" if product_size is not selected
+                                if (product_size == "size") {
+                                    answer.innerHTML = "Select size";
+                                } else {
 
                                 fetch('tocart_ajax.php', {
                                     method: 'POST', // Send as POST
@@ -149,9 +144,13 @@ require('templates/header.php');
                                     // when then-promise has been succesful parse to json
                                     return response.json();
                                 }).then(function(myJson) {
-                                    // when then-promise has been succesful prints json
-                                    answer.innerHTML = myJson;                                                   
+                                    // when then-promise has been succesful modal opens
+                                    $("#getCode").html(myJson);
+                                    jQuery("#addedModal").modal('show');   
+                                    answer.innerHTML = myJson;                                               
                                 });
+
+                            }
                                 
                             }
 

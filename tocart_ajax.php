@@ -15,21 +15,16 @@ $product_size = $json["product_size"];
 
 $cart = new Cart($product_id, $sql, $session_id, $product_size);
 
-if ($product_size == 'Size') {
-
-    echo json_encode('<p style="color: rgb(198, 62, 62);"><i class="fa fa-ban" aria-hidden="true"></i> Please select size.</p>');
-} else {
 
     if ($cart->add()) {
     
-        echo json_encode('<i class="fa fa-check-circle-o" aria-hidden="true"></i> In basket.');
+        echo json_encode('');
     
     } else {
     
-        echo json_encode('Problem with adding the product to the cart. Please try again.');
+        echo json_encode('');
     
     }
     
 
-}
 

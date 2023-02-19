@@ -19,7 +19,7 @@ require('templates/header.php');
                         <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Slide 3"></button>
                     </div>
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
+                        <div class="carousel-item active">                            
                             <img src="uploads/skate1.jpg" class="d-block w-100" alt="...">
                             <div class="carousel-caption" style="text-align: left;">
                                 <h1>Welcome</h1>
@@ -80,19 +80,18 @@ require('templates/header.php');
                                 <div class="card-body">
                                     <form><input id="session_id_<?= $row['id'] ?>" type="hidden" value="<?= $session_id; ?>">
                                         <input id="product_id_<?= $row['id'] ?>" type="hidden" value="<?= $row['id']; ?>">
-                                        <p style="color:brown;">
-                                            <?php
+                                        <p>
+                                    <?php
 
-                                            if(getStock($row['id'])) {
+                                    if($stock = getStock($row['id'])) {
 
-                                                echo '
-                                                <i class="fa fa-exclamation-circle" aria-hidden="true"> <b>Out of stock.</b></i>
-                                                ';
 
-                                            } 
+                                        echo $stock;
 
-                                            ?>
-                                        </p>
+                                    } 
+
+                                    ?>
+                                </p>
                                         <select id="form-select<?= $row['id'] ?>" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
                                             <option selected>Size</option>
                                             <!-- Prints sizes what are in the stock -->
@@ -157,7 +156,7 @@ require('templates/header.php');
                             }
 
                             // Updates cart-icon's total number when content clicked. !!! TO DO: not good code, but gotta find better way
-                            $("#content").click(function() {
+                            $("#add" + <?= $row['id'] ?>).click(function() {
                                 $("#cart-total").load("cart_total.php");
                             });
 

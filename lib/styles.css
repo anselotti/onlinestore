@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap');
 
 
-
 html, body {  
     background-color: rgb(244, 244, 244);
     font-family: Releway;
@@ -17,12 +16,12 @@ html, body {
 
  /* HEADINGS */
 h1 {
-    font-size: 3rem; 
+    font-size: 9vw; 
     font-weight: bold; 
     letter-spacing: -2;
     line-height: 1; 
     text-align: left;
-    color: #2C4A52;
+    color: #f4ebdb;
     
     
 }
@@ -259,11 +258,19 @@ a:hover {
 
 }
 
-/* OOut of stock icon */
-.dot {
-  height: 25px;
-  width: 25px;
-  background-color: #bbb;
-  border-radius: 50%;
-  display: inline-block;
+/* Bootstrap-carousel styling */
+.carousel-caption {
+  font-size: 20px;
+  line-height: normal;
+}
+
+/* Carousel mask */
+.carousel-item:before {
+  content:"";
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(0,0,0,0.3);
 }

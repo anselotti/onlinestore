@@ -15,7 +15,7 @@ $row = $products->getProducts();
 <!-- CONTENT STARTS -->
 <div class="col-lg-10" id="content">
     <div class="row" style="padding: 20px;">
-        <h1>Checkout</h1>
+        <h1 style="color: #2C4A52;">Checkout</h1>
         <div class="progress-stacked" style="background-color: #f4ebcf!important; padding: 0px; margin: auto;">
             <div class="progress" role="progressbar" aria-label="Segment one" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100" style="width: 33%">
                 <div class="progress-bar bg-success" style="background-color: #2C4A52!important;">Your data</div>

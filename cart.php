@@ -117,11 +117,6 @@ $title = 'cart';
                     var session_id2 = document.getElementById("session_id").value;
                     var product_size2 = document.getElementById("product_size" + <?= $cart_row['id']; ?>).value;
 
-                    console.log(pcs2);
-                    console.log(product_id2);
-                    console.log(session_id2);
-                    console.log(product_size2);
-
                     fetch('minus_ajax.php', {
                         method: 'POST', // Send as POST
                         headers: { // Tells headers to the server
@@ -138,8 +133,7 @@ $title = 'cart';
                         return response.json();
                     }).then(function(myJson) {
                         // when then-promise has been succesful prints json
-                        pcs_answer2.innerHTML = myJson;
-                        console.log(pcs_answer2)                                                   
+                        pcs_answer2.innerHTML = myJson;                                                  
                     });
 
                     }
@@ -155,10 +149,12 @@ $title = 'cart';
                 // updates cart-button number
                 $("#plus" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
+                    $("#cart-total").load("cart_total.php");
                 });
                 // updates cart-button number
                 $("#minus" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
+                    $("#cart-total").load("cart_total.php");
                 });
 
             </script>

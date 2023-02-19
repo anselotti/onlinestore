@@ -27,17 +27,17 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
 
 <!-- CONTENT STARTS -->
 <div class="col-lg-10" id="content">
-
-    <h2 style="padding: 20px;">Select category from below:</h2>
     <!-- Category-buttons -->
     <div class="container" style="padding: 20px;">
-        <a href="products.php" class="btn btn-dark" id="cat-all" name="category" type="button">All</a>
+        <h1 style="color: #2C4A52;">Products</h1>
+        <h2 style="padding: 20px;">Select category from below:</h2>
+        <a href="products.php" class="btn btn-dark" id="cat-all" name="category" type="button">all</a>
         <?php
             // Brings all the categories found in category-table
             $result_products = $sql->query("SELECT * FROM category");
 
             while ($row_products = $result_products->fetch_assoc()) {
-                echo '<a href="products.php?category=' . $row_products['name'] .'" class="btn btn-dark" id="cat-skate" name="category" type="button">'. $row_products['name'] .'</a>';
+                echo '<a href="products.php?category=' . $row_products['name'] .'" class="btn btn-dark" id="cat-skate" name="category" type="button">'. $row_products['name'] .'</a> ';
             }
 
         ?>
@@ -71,14 +71,13 @@ if (!isset($category)) { // if $_GET['category'] has not set, if uses object to 
                                 <input id="product_id_<?= $row[$i]['id'] ?>" type="hidden" value="<?= $row[$i]['id']; ?>">
 
                                 <!-- Checks if the product found in stock using getStock-function -->
-                                <p style="color:brown;">
+                                <p>
                                     <?php
 
-                                    if(getStock($row[$i]['id'])) {
+                                    if($stock = getStock($row[$i]['id'])) {
 
-                                        echo '
-                                        <i class="fa fa-exclamation-circle" aria-hidden="true"> <b>Out of stock.</b></i>
-                                        ';
+
+                                        echo $stock;
 
                                     } 
 

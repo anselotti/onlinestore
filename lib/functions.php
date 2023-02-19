@@ -1,25 +1,36 @@
 <?php
 require('db.php');
 
-function getStock($id) : bool {
+function getStock($id) : string {
 
     global $sql;
     
-    // Setting all the produts from stock to an array
+    // Setting all the produts from stock to an array where is the given product_id
     $result = $sql->query("SELECT * FROM stock WHERE product_id = '" . $id . "'");
-    $row = $result->num_rows;
 
-    // if there there isn't any, returns true what means there is no staff in stock. 
-    // TO DO: Make this to return if there are < 5 or 0 in stock.
-    if($row < 1) {
+    // creating counter
+    $qty = 0;
 
-        return true;
+    // While loop counts all the products in stock to the variable $qty
+    while ($row = $result->fetch_assoc()) {
+
+        $qty = $qty + $row['quantity'];
+    }
+
+    // returns string with information about product's amount in the stock
+    if($qty < 1) {
+
+        return '<i class="fa fa-ban" aria-hidden="true" style="color: red;"> Out of stock</i>';
+
+    } else if ($qty < 10) {
+
+        return '<i class="fa fa-exclamation-circle" aria-hidden="true" style="color: orange;"> Only few left in stock</i>';
 
     } else {
 
-        return false;
-
+        return '<i class="fa fa-check-circle" aria-hidden="true" style="color: green;"> In stock</i>';
     }
+
 }
 
 ?>

@@ -33,4 +33,19 @@ function getStock($id) : string {
 
 }
 
+function allCategories() : array {
+
+    global $sql;
+
+    $array = [];
+
+    $result = $sql->query("SELECT * FROM category");
+
+    while ($row = $result->fetch_assoc()) {
+        $array[] = $row;
+    }
+
+    return $array;
+} 
+
 ?>

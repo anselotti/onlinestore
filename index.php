@@ -22,21 +22,21 @@ require('templates/header.php');
                         <div class="carousel-item active">                            
                             <img src="uploads/skate1.jpg" class="d-block w-100" alt="...">
                             <div class="carousel-caption" style="text-align: left;">
-                                <h1>Welcome</h1>
+                                <h1 style="font-size: 9vw; color: #f4ebdb;">Welcome</h1>
                                 <p>We are passionate about skateboarding and all things related. </p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <img src="uploads/skate2.jpg" class="d-block w-100" alt="...">
                             <div class="carousel-caption" style="text-align: left;">
-                                <h1>Skateboards And Clothing</h1>
+                                <h1 style="font-size: 9vw; color: #f4ebdb;">Skateboards And Clothing</h1>
                                 <p>Here, you will find high-quality skateboards and stylish clothing. </p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <img src="uploads/skate3.jpg" class="d-block w-100" alt="...">
                             <div class="carousel-caption" style="text-align: left;">
-                                <h1>Stuff For Every Skateboarder</h1>
+                                <h1 style="font-size: 9vw; color: #f4ebdb;">Stuff For Every Skateboarder</h1>
                                 <p>Whether you're just starting out or you're a seasoned pro, we have everything you need.</p>
                             </div>
                         </div>
@@ -126,7 +126,7 @@ require('templates/header.php');
                                 
                                 // returns "Select size" if product_size is not selected
                                 if (product_size == "size") {
-                                    answer.innerHTML = "Select size";
+                                    answer.innerHTML = "Please, select size";
                                 } else {
 
                                 fetch('tocart_ajax.php', {
@@ -147,7 +147,7 @@ require('templates/header.php');
                                     // when then-promise has been succesful modal opens
                                     $("#getCode").html(myJson);
                                     jQuery("#addedModal").modal('show');   
-                                    answer.innerHTML = myJson;                                               
+                                    answer.innerHTML = "";                                              
                                 });
 
                             }

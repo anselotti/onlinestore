@@ -56,17 +56,18 @@ $cartproducts = $cart->getCart();
 
     <!-- PRODUCT ADDED TO CART- MODAL -->
     <div class="modal fade" id="addedModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Well done!</h5>
+        <h4><b>Well done!</b></h4>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        The product added to the cart.
+        <h5>The product added to the cart.</h5>
       </div>
       <div class="modal-footer">
-        <a href="checkout.php" class="btn" type="button" class="btn btn-primary">Checkout</a>
+        <button type="button" class="btn-continue" data-bs-dismiss="modal">Continue shopping</button>
+        <a href="checkout.php" class="btn-modal" type="button" class="btn btn-primary">Checkout</a>
       </div>
     </div>
   </div>

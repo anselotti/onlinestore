@@ -39,20 +39,13 @@ $imgurl = $row_p['imgurl'];
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-start">
 
-          <?php
-
-          if (getStock($id)) {
-
-            echo '
-             <i class="fa fa-exclamation-circle" aria-hidden="true"> <b>Out of stock</b></i>
-             ';
-          }
-
-          ?>
+          <p> <!-- Checks amount of the product -->
+            <?php if ($stock = getStock($id)) { echo $stock; } ?>
+          </p>
 
         </div>
         <select id="form-select" class="form-select" aria-label="Default select example" style="width: 90%; margin: 10px;">
-          <option selected>Size</option>
+          <option value="size" selected>Size</option>
           <!-- Prints sizes what are in the stock -->
           <?php
           $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $id . "'");
@@ -90,29 +83,30 @@ $imgurl = $row_p['imgurl'];
 
       // returns "Select size" if product_size is not selected
       if (product_size == "size") {
-        answer.innerHTML = "Select size";
+        answer.innerHTML = "Please, select size";
       } else {
 
-      fetch('tocart_ajax.php', {
-        method: 'POST', // Send as POST
-        headers: { // Tells headers to the server
-          'Accept': 'application/json',
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          product_id: product_id,
-          session_id: session_id,
-          product_size: product_size
-        }) // Sending JSON-data to server
-      }).then(function(response) {
-        // when then-promise has been succesful parse to json
-        return response.json();
-      }).then(function(myJson) {
-        // when then-promise has been succesful modal opens
-        $("#getCode").html(myJson);
-        jQuery("#addedModal").modal('show');
-      });
-    }
+        fetch('tocart_ajax.php', {
+          method: 'POST', // Send as POST
+          headers: { // Tells headers to the server
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            product_id: product_id,
+            session_id: session_id,
+            product_size: product_size
+          }) // Sending JSON-data to server
+        }).then(function(response) {
+          // when then-promise has been succesful parse to json
+          return response.json();
+        }).then(function(myJson) {
+          // when then-promise has been succesful modal opens
+          $("#getCode").html(myJson);
+          jQuery("#addedModal").modal('show');
+          answer.innerHTML = "";
+        });
+      }
     }
 
     $("#add").click(function() {

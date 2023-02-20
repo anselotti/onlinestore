@@ -150,23 +150,18 @@ $row = $products->getProducts();
 
                             }
 
-                            // updates cart using ajax and deleting "answer" in the product-card
+                            // reload page on click bcs in this moment of order everything has to be 100 % updated 
                             $("#delete-itemB" + <?= $cart_row['id'] ?>).click(function() {
-                                $("#cartcontent").load("cart.php");
-                                $("#answerB" + <?= $cart_row['product_id']; ?>).empty(); // cleans the answer-div
-                                // updates cart-button number
-                                $("#cart-total").load("cart_total.php");
+                                location.reload(true);
                             });
 
-                            // updates cart-button number
+
                             $("#plusB" + <?= $cart_row['id'] ?>).click(function() {
-                                $("#cartcontent").load("cart.php");
-                                $("#cart-total").load("cart_total.php");
+                                location.reload(true);
                             });
-                            // updates cart-button number
+
                             $("#minusB" + <?= $cart_row['id'] ?>).click(function() {
-                                $("#cartcontent").load("cart.php");
-                                $("#cart-total").load("cart_total.php");
+                                location.reload(true);
                             });
                         </script>
                     <?php
@@ -209,7 +204,7 @@ $row = $products->getProducts();
                         <input type="password" class="form-control" id="password" placeholder="Password" aria-label="Password">
                     </div>
                     <div class="col-sm-12">
-                        <input type="password2" class="form-control" id="password2" placeholder="Password again" aria-label="Password again">
+                        <input type="password" class="form-control" id="password2" placeholder="Password again" aria-label="Password again">
                     </div>
                     <div class="col-12">
                         <button type="submit" class="btn btn-primary" id="submitOrder">Submit order</button>

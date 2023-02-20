@@ -16,14 +16,12 @@ html, body {
 
  /* HEADINGS */
 h1 {
-    font-size: 9vw; 
+    font-size: 6rem; 
     font-weight: bold; 
     letter-spacing: -2;
     line-height: 1; 
     text-align: left;
-    color: #f4ebdb;
-    
-    
+    color: #537072;
 }
 
 h2 {
@@ -117,6 +115,41 @@ a:hover {
   background-color: #537072;   
 }
 
+.btn-modal {
+  color: white;
+  border: 1px #2C4A52 solid;
+  border-radius: 5px;
+  background-color: #2C4A52;
+  padding: 10px;
+  cursor: pointer;
+  font-size: large;
+  text-decoration: none;
+
+}
+
+.btn-modal:hover {
+  background-color: #537072;
+  color: white;
+}
+
+.btn-continue {
+  color: #2C4A52;
+  border: 1px #2C4A52 solid;
+  border-radius: 5px;
+  background-color: #f4ebdb;
+  padding: 10px;
+  cursor: pointer;
+  font-size: large;
+  text-decoration: none;
+
+}
+
+.btn-continue:hover {
+  background-color: #537072;
+  color: white;
+  
+}
+
 
 /* Cart-button in navbar */
 #cartbutton {
@@ -145,7 +178,7 @@ a:hover {
   /* Styles for the answer when product added to cart */
   .answer {
     font-size: large;
-    color: red;
+    
   }
 
 

@@ -1,6 +1,7 @@
 <?php
 require('db.php');
 
+// function to get information to show availability of products
 function getStock($id) : string {
 
     global $sql;
@@ -33,6 +34,24 @@ function getStock($id) : string {
 
 }
 
+// Decreaces stock where product_id, size and quantity matches
+function minusStock($product_id, $product_size, $qty) : bool {
+
+    global $sql;
+
+      if($sql->query("UPDATE stock SET quantity = quantity - '$qty' WHERE product_id = '" . $product_id . "' AND size = '" . $product_size . "'")) { 
+  
+        return true;
+  
+      } else {
+          
+        return false;
+          
+      }
+
+}
+
+// returns all categories in an array
 function allCategories() : array {
 
     global $sql;
@@ -46,6 +65,8 @@ function allCategories() : array {
     }
 
     return $array;
-} 
+}
+
+
 
 ?>

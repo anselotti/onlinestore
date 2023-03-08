@@ -96,7 +96,7 @@ require('templates/header.php');
                                             <option selected value="size">Size</option>
                                             <!-- Prints sizes what are in the stock -->
                                             <?php
-                                            $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $row['id'] . "'");
+                                            $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $row['id'] . "' AND quantity > 0");
                                             while ($row_sizes = $result_sizes->fetch_assoc()) {
                                                 var_dump($row_sizes['size']);
                                                 echo '<option value="' . $row_sizes['size'] . '">' . $row_sizes['size'] . '</option>';
@@ -106,7 +106,7 @@ require('templates/header.php');
                                         <p class="answer" id="answer<?= $row['id']; ?>">
                                         <!-- Javascript returns "select size" if size is not selected -->                                        
                                         </p>
-                                        <button class="btn btn-primary" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">Add to basket</button>
+                                        <button class="btn btn-dark" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">To cart</button>
                                     </form>
                                     
                                 </div>
@@ -117,7 +117,7 @@ require('templates/header.php');
    
                             var submit = document.getElementById("add" + <?= $row['id']; ?>);
 
-                            submit.onclick = function() {
+                            submit.addEventListener("click", function() {
 
                                 var answer = document.getElementById("answer" + <?= $row['id']; ?>);
                                 var product_id = document.getElementById("product_id_" + <?= $row['id']; ?>).value;
@@ -152,12 +152,12 @@ require('templates/header.php');
 
                             }
                                 
-                            }
+                            });
 
                             // Updates cart-icon's total number when content clicked. !!! TO DO: not good code, but gotta find better way
-                            $("#add" + <?= $row['id'] ?>).click(function() {
-                                $("#cart-total").load("cart_total.php");
-                            });
+                            // $("#add" + <?= $row['id'] ?>).click(function() {
+                            //     $("#cart-total").load("cart_total.php");
+                            // });
 
 
 
@@ -165,10 +165,9 @@ require('templates/header.php');
 
                     <?php
                     }
-                    ?>
-                        
+                    ?>                      
 
-                        <a href="products.php" style="text-align: center;" class="menu-button"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Check out our wide demand for skateboarding products.</a>
+                    <a href="products.php" style="text-align: center;" class="menu-button"><i class="fa fa-long-arrow-right" aria-hidden="true"></i> Check out our wide demand for skateboarding products.</a>
 
                 </div>
 

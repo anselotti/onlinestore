@@ -28,19 +28,37 @@ if (!isset($category)) {
 <!-- CONTENT STARTS -->
 <div class="col-lg-10" id="content">
     <!-- Category-buttons -->
-    <div class="container" style="padding: 20px;">
+    <div class="container-fluid" style="padding: 20px;">
         <h1 style="color: #2C4A52;">Products</h1>
         <h2 style="padding: 20px;">Select category from below:</h2>
-        <a href="products.php" class="btn btn-dark" id="cat-all" name="category" type="button">all</a>
-        <?php
-        // Using function "allCategories() to have all the categories in an array.
-        $categories = allCategories();
-        // for-loop through the array to print category-buttons
-        for ($i = 0; $i < count($categories); $i++) {
-            echo '<a href="products.php?category=' . $categories[$i]['name'] . '" class="btn btn-dark" id="cat-skate" name="category" type="button">' . $categories[$i]['name'] . '</a> ';
-        }
 
-        ?>
+        <!-- List-group navigation start -->
+        <div class="list-group">
+            <?php
+            // all products-button is active if category is empty
+            if (strstr($_SERVER["SCRIPT_FILENAME"], 'products.php') && $_GET['category'] == '') {
+                echo '<a href="products.php" class="list-group-item list-group-item-action active" aria-current="true">all products</a>';
+            } else {
+                echo '<a href="products.php" class="list-group-item list-group-item-action" aria-current="true">all products</a>';
+            }
+            ?>
+            <?php
+            // Using function "allCategories() to have all the categories in an array.
+            $categories = allCategories();
+
+            // for-loop through the array to print category-buttons
+            for ($i = 0; $i < count($categories); $i++) {
+                // category-button is active when proper category is selected
+                if ($_GET['category'] == $menu_categories[$i]['name']) {
+                    echo '<a href="products.php?category=' . $categories[$i]['name'] . '" class="list-group-item list-group-item-action active">' . $menu_categories[$i]['name'] . '</a></li>';
+                } else {
+                    echo '<a href="products.php?category=' . $categories[$i]['name'] . '" class="list-group-item list-group-item-action">' . $categories[$i]['name'] . '</a>';
+                }
+            }
+
+            ?>
+        </div>
+        <!-- List-group navigation end -->
     </div>
 
 
@@ -88,7 +106,7 @@ if (!isset($category)) {
                                     <option value="size" selected>Size</option>
                                     <!-- Prints sizes what are in the stock -->
                                     <?php
-                                    $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $row[$i]['id'] . "'");
+                                    $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $row[$i]['id'] . "' AND quantity > 0");
                                     while ($row_sizes = $result_sizes->fetch_assoc()) {
 
                                         echo '<option value="' . $row_sizes['size'] . '">' . $row_sizes['size'] . '</option>';
@@ -108,7 +126,7 @@ if (!isset($category)) {
                 <script>
                     var submit = document.getElementById("add" + <?= $row[$i]['id']; ?>);
 
-                    submit.onclick = function() {
+                    submit.addEventListener("click", function() {
 
                         var answer = document.getElementById("answer" + <?= $row[$i]['id']; ?>);
                         var product_id = document.getElementById("product_id_" + <?= $row[$i]['id']; ?>).value;
@@ -142,11 +160,6 @@ if (!isset($category)) {
                             });
                         }
 
-                    }
-
-                    // Updates cart-icon's total number when content clicked. !!! TO DO: not good code, but gotta find better way
-                    $("#add" + <?php echo $row[$i]['id']; ?>).click(function() {
-                        $("#cart-total").load("cart_total.php");
                     });
                 </script>
 

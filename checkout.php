@@ -8,9 +8,11 @@ require("lib/class.products.php");
 
 $products = new Products(0, $sql, 0);
 $row = $products->getProducts();
+$customer_id = $_SESSION['logged_id'];
 
 
 ?>
+
 
 <!-- CONTENT STARTS -->
 <div class="col-lg-10" id="content">
@@ -29,16 +31,35 @@ $row = $products->getProducts();
         </div>
         <div class="col-sm-6">
             <h2>Your products</h2>
-            <!-- TO DO: MAKE THIS UNIQUE BCS INCLUDING MIXES CODE AND DOES NOT WORK CORRECTY -->
             <div id="cartcontent">
                 <ul class="cart-listB">
                     <?php
 
-                    // while loop shows all the added products based on session_id.   
+
                     $sum = 0;
                     $taxes = 0;
-                    $cart_result = $sql->query("SELECT * FROM cart WHERE session_id = '$session_id' AND pcs > 0");
 
+                    // takes result to $cart_result. If customer is logged in the result is based on customer_id. If not
+                    // the result is based on session_id.
+                    if ($_SESSION['logged_id'] == false) {
+
+                        $cart_result = $sql->query("
+                        SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
+                        FROM cart
+                        JOIN products ON cart.product_id = products.id
+                        WHERE cart.session_id = '$session_id' AND cart.pcs > 0
+                    ");
+                    }
+
+                    if ($_SESSION['logged_id'] == true) {
+                        $cart_result = $sql->query("
+                        SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
+                        FROM cart
+                        JOIN products ON cart.product_id = products.id
+                        WHERE cart.customer_id = '$customer_id' AND cart.pcs > 0
+                    ");
+                    }
+                    // while loop shows all the added products based on session_id and customer_id.   
                     while ($cart_row = $cart_result->fetch_assoc()) {
 
 
@@ -61,6 +82,8 @@ $row = $products->getProducts();
                         <?php
                         $sum = ($sum + $productsrow['price']) * $cart_row['pcs'];
                         $taxes = ($taxes + $productsrow['tax']) * $cart_row['pcs'];
+
+
                         ?>
 
                         <script>
@@ -168,70 +191,236 @@ $row = $products->getProducts();
                     }
 
                     ?>
-                    <b>Total sum: <?= $sum ?> € </b><i>(Taxes: <?= $taxes ?> €)</i>
+                    <b>Total sum: <?= $sum ?> € </b>(Taxes: <?= $taxes ?> €)
+
                 </ul>
+
             </div>
         </div>
-        <div class="col-sm-6" style="max-width: 560px">
-            <h2>Your data</h2>
-            <form class="row g-3">
-                <div class="row g-3">
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="firstname" placeholder="Eric" aria-label="Eric">
-                    </div>
-                    <div class="col-sm-6">
-                        <input type="text" class="form-control" id="lastname" placeholder="Example" aria-label="Example">
-                    </div>
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control" id="address" placeholder="Address 1 B 2" aria-label="Address 1 B 2">
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="zip" placeholder="00100" aria-label="00100">
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="city" placeholder="Helsinki">
-                    </div>
-                    <div class="col-sm-4">
-                        <input type="text" class="form-control" id="country" placeholder="Finland">
-                    </div>
-                    <div class="col-sm-12">
-                        <input type="text" class="form-control" id="phone" placeholder="Telephone">
-                    </div>
-                    <div class="col-sm-12">
-                        <input type="email" class="form-control" id="email" placeholder="Email" aria-label="Email">
-                    </div>
-                    <div class="col-sm-12">
-                        <input type="password" class="form-control" id="password" placeholder="Password" aria-label="Password">
-                    </div>
-                    <div class="col-sm-12">
-                        <input type="password" class="form-control" id="password2" placeholder="Password again" aria-label="Password again">
-                    </div>
-                    <div class="col-12">
-                        <button type="submit" class="btn btn-primary" id="submitOrder">Submit order</button>
-                    </div>
-            </form>
 
-            <form class="row g-3">
+        <?php
+        if ($_SESSION['logged_id'] == false) { ?>
+            <div class="col-sm-6" style="max-width: 560px">
+                <h2>Your data</h2>
+
                 <b>If you already have an account please sign in:</b>
+
                 <div class="row g-3">
                     <div class="col-sm-6">
-                        <input type="email" class="form-control" id="email_login" placeholder="Email" aria-label="Number">
+                        <input name="email" type="email" class="form-control" id="emailCheckout" placeholder="Email" aria-label="Number">
                     </div>
                     <div class="col-sm-6">
-                        <input type="password" class="form-control" id="password_login" placeholder="Password" aria-label="Password">
+                        <input name="password" type="password" class="form-control" id="passwordCheckout" placeholder="Password" aria-label="Password">
                     </div>
                     <div class="col-12">
-                        <button type="submit" class="btn btn-primary" id="submit_login">Sign in</button>
+                        <button type="button" class="btn btn-dark" id="loginCheckout">Sign in</button>
+                        <p id="loginErrorCheckout"></p>
                     </div>
-            </form>
+                    </form>
+                    <script>
+                        var loginBtn = document.getElementById("loginCheckout");
 
-        </div>
+                        loginBtn.onclick = function() {
+
+                            var loginError = document.getElementById("loginErrorCheckout");
+                            var email = document.getElementById("emailCheckout").value;
+                            var password = document.getElementById("passwordCheckout").value;
+
+                            fetch('do_login.php', {
+                                method: 'POST', // Send as POST
+                                headers: { // Tells headers to the server
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({
+                                    email: email,
+                                    password: password
+                                }) // Sending JSON-data to server
+                            }).then(function(response) {
+                                // when then-promise has been succesful parse to json
+                                return response.json();
+                            }).then(function(myJson) {
+                                // when then-promise has been succesful modal opens 
+                                if (myJson == '') {
+                                    location.reload(true);
+                                } else {
+                                    loginError.innerHTML = myJson;
+                                }
+
+
+                            });
+
+                        }
+                    </script>
+                    <form action="do_register.php" method="POST" class="row g-3">
+                        <b>If you do not have an account, please fill the form:</b>
+                        <div class="row g-3">
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="firstname" placeholder="Eric">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="lastname" placeholder="Example">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="address" placeholder="Address 1 B 2">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="zip" placeholder="00100">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="city" placeholder="Helsinki">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="country" placeholder="Finland">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="phone" placeholder="Telephone">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="email" class="form-control" name="email" placeholder="Email">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="password" class="form-control" name="password" placeholder="Password">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="password" class="form-control" name="password2" placeholder="Password again">
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-dark" name="submit">Register</button>
+                            </div>
+                    </form>
+
+                    <?php
+
+
+                    if (is_array($_SESSION['errors']) && count($_SESSION['errors']) > 0) { // both is_countable and isset works in here
+
+                        foreach ($_SESSION['errors'] as $e) {
+                            echo $e . '<br>';
+                        }
+
+                        unset($_SESSION['errors']);
+                    }
+
+                    ?>
+
+
+
+                </div>
+            <?php
+        } else {
+            $customer = new Customer($_SESSION['logged_id'], $sql);
+
+            $customer_data = $customer->getCustomer();
+
+            ?>
+
+                <div class="col-sm-6" style="max-width: 560px">
+                    <h2>Your data</h2>
+                    <?php
+                    if ($_GET['error'] == 3) {
+                        echo '<p style="color: green;">Your data has updated!</p>';
+                    }
+                    ?>
+                    <form action="do_modify.php" method="POST" class="row g-3">
+                        <div class="row g-3">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="id" value="<?= $customer_data[0]['id'] ?>" hidden>
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="firstname" value="<?= $customer_data[0]['firstname'] ?>">
+                            </div>
+                            <div class="col-sm-6">
+                                <input type="text" class="form-control" name="lastname" value="<?= $customer_data[0]['lastname'] ?>">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="address" value="<?= $customer_data[0]['address'] ?>">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="zip" value="<?= $customer_data[0]['zip'] ?>">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="city" value="<?= $customer_data[0]['city'] ?>">
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" class="form-control" name="country" value="<?= $customer_data[0]['country'] ?>">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" name="phone" value="<?= $customer_data[0]['phone'] ?>">
+                            </div>
+                            <div class="col-sm-12">
+                                <input type="email" class="form-control" name="email" value="<?= $customer_data[0]['email'] ?>">
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-dark" name="submit">Update data</button>
+                            </div>
+                            <h2>Payment method</h2>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="flexRadioDisabled" value="invoice" checked>
+                                <label class="form-check-label" for="flexRadioDisabled">
+                                    Invoice (to email)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="payment" id="flexRadioDisabled" value="paypal">
+                                <label class="form-check-label" for="flexRadioDisabled">
+                                    Credit card or PayPal
+                                </label>
+                            </div>
+                            <h2>Shipping method</h2>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="shipping" id="flexRadioDisabled" value="posti" checked>
+                                <label class="form-check-label" for="flexRadioDisabled">
+                                    Posti 5 € (Only in Finland)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="shipping" id="flexRadioCheckedDisabled" value="dhl">
+                                <label class="form-check-label" for="flexRadioCheckedDisabled">
+                                    DHL 10 €
+                                </label>
+                            </div>
+                            <div class="col-12">
+                                <button formaction="payment.php" type="submit" class="btn btn-dark" name="submit">Continue to payment</button>
+                            </div>
+
+
+                    </form>
+
+
+                    <?php
+
+
+
+                    if (is_array($_SESSION['errors']) && count($_SESSION['errors']) > 0) { // both is_countable and isset works in here
+
+                        foreach ($_SESSION['errors'] as $e) {
+                            echo $e . '<br>';
+                        }
+
+                        unset($_SESSION['errors']);
+                    }
+
+                    ?>
+
+
+
+                </div>
+
+            <?php
+
+        }
+            ?>
+            </div>
+            
     </div>
-    <!-- HUOM TEE SISÄÄNKIRJAUTUESSA NIIN, ETTÄ CARTIIN PÄIVITTYY CUSTOMER_ID. 
-    AINA KUN ON LOGANNUT SISÄÄN, NIIN CART NÄYTTÄÄ TUOTTEET CUSTOMER_ID:N PERUSTEELLA. SESSION DESTROY, CUN TUOTTEET OSTETTU? -->
 </div>
 </div>
 </div>
+    </div>
+
 <!-- CONTENT ENDS -->
 
 <!-- FOOTER INCLUDE -->

@@ -7,10 +7,8 @@ require("lib/class.cart.php");
 require("lib/class.customer.php");
 
 
-// importing data from the contact form
-
+// importing data from the form
 // sanitizing information security
-
 $firstname = $sql->real_escape_string($_POST['firstname']);
 $lastname = $sql->real_escape_string($_POST['lastname']);
 $address = $sql->real_escape_string($_POST['address']);
@@ -41,7 +39,28 @@ if (strlen($email) < 6) {
     $errors[] = "email has to include @-sign";
 } 
 
-
+// checking that there are no empty fields
+if (strlen($firstname) < 1) {
+    $errors[] = "Too short first name";
+} 
+if (strlen($lastname) < 1) {
+    $errors[] = "Too short last name";
+} 
+if (strlen($address) < 4) {
+    $errors[] = "Too short address";
+} 
+if (strlen($zip) < 5) {
+    $errors[] = "Too short zip";
+} 
+if (strlen($city) < 1) {
+    $errors[] = "Too short city";
+}
+if (strlen($country) < 2) {
+    $errors[] = "Too short country";
+}
+if (strlen($phone) < 5) {
+    $errors[] = "Too short country";
+} 
 
 // importing all the rows from the table where are given username or password
 $queryCheck = $sql->query("SELECT * FROM customer WHERE email='$email'");
@@ -81,7 +100,12 @@ if (count($errors) === 0) {
 
     if($customer->login()) {
 
-        header("Location: payment.php");
+        $cart = new Cart($_SESSION['logged_id'], $sql);
+        $cart->session_id = session_id();
+        $cart->addCustomerToCart();
+
+
+        header("Location: checkout.php");
 
     } else {
 

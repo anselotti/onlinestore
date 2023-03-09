@@ -3,6 +3,13 @@ session_start();
 
 class Customer extends Base {
 
+    public $firstname;
+    public $lastname;
+    public $address;
+    public $zip;
+    public $city;
+    public $country;
+    public $phone;
     public $email;
     public $password;
 
@@ -11,6 +18,12 @@ class Customer extends Base {
         $result = $this->sql->query("SELECT * FROM customer WHERE id = '" . $this->id ."'");
         $row = $result->fetch_assoc();
 
+        $this->firstname = $row['firstname'];
+        $this->lastname = $row['lastname'];
+        $this->address = $row['address'];
+        $this->zip = $row['zip'];
+        $this->city = $row['city'];
+        $this->country = $row['country'];
         $this->email = $row['email'];
         $this->password = $row['password'];
 
@@ -26,14 +39,14 @@ class Customer extends Base {
         $password = $sql->real_escape_string($this->password); 
     
         // sql-query to check if given username and password exists and matches
-        $result = $sql->query("SELECT id, admin FROM customer WHERE email = '".$email."' AND password = '".$password."'");
+        $result = $sql->query("SELECT id, admin, email FROM customer WHERE email = '".$email."' AND password = '".$password."'");
     
         // if there are any, then _SESSION is true and user is logged.
         if($result->num_rows) {
     
             $row = $result->fetch_assoc();
             $_SESSION['logged_id'] = $row['id'];
-            $_SESSION['admin'] = $row['admin'];
+            $_SESSION['admin'] = $row['admin']; // if admin-panel will be made
             $_SESSION['customer'] = $row['email'];
             
             return true;
@@ -62,6 +75,21 @@ class Customer extends Base {
         
         return $customer_arr;
 
+        
+    }
+
+    // modifies customer data
+    public function modify() : bool {
+
+        if($this->sql->query("UPDATE customer SET firstname = '".$this->firstname."', lastname = '".$this->lastname."', address = '".$this->address."', zip = '".$this->zip."', city = '".$this->city."', country = '".$this->country."', phone = '".$this->phone."', email = '".$this->email."' WHERE id = '".$this->id."'")) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
         
     }
 

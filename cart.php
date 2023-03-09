@@ -1,9 +1,14 @@
 <?php
 session_start(); // Session starts
-$session_id = session_id();
-require("lib/db.php"); // Connection to database
 
-// checks if Cart is used before in code.
+require("lib/db.php"); // Connection to database
+$session_id = session_id();
+$customer_id = $_SESSION['logged_id'];
+
+// checks if Cart is used in code before.
+if (!class_exists("Base")) {
+    require("lib/class.base.php");
+}
 if(!class_exists("Cart")) {
     require("lib/class.cart.php");
 }
@@ -25,18 +30,38 @@ $title = 'cart';
         // while loop shows all the added products based on session_id.   
         $sum = 0;
         $taxes = 0;
-        $cart_result = $sql->query("SELECT * FROM cart WHERE session_id = '$session_id' AND pcs > 0");
 
-        while ($cart_row = $cart_result->fetch_assoc()) {
+        // takes all the products from cart based on session_id when customer is not logged in
+        if ($_SESSION['logged_id'] == false) {
 
+            $cart_products = $sql->query("
+            SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
+            FROM cart
+            JOIN products ON cart.product_id = products.id
+            WHERE cart.session_id = '$session_id' AND cart.pcs > 0
+        ");
 
-            $products = $sql->query("SELECT * FROM products WHERE id='" . $cart_row['product_id'] . "'");
-            $productsrow = $products->fetch_assoc(); ?>
+        } 
+        
+        // takes all the products from cart based on customer_id when customer is logged in
+        if ($_SESSION['logged_id'] == true) {
+            $cart_products = $sql->query("
+            SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
+            FROM cart
+            JOIN products ON cart.product_id = products.id
+            WHERE cart.customer_id = '$customer_id' AND cart.pcs > 0
+        ");
+        }
+    
+        
+
+        while ($cart_row = $cart_products->fetch_assoc()) {
+             ?>
 
             <li><input type="hidden" id="session_id" value="<?= $session_id ?>">
-                <input type="hidden" id="product_id<?= $cart_row['id'] ?>" value="<?= $cart_row['product_id'] ?>"><a href="product.php?id=<?=$cart_row['product_id']?>"><?= $productsrow['name']; ?>, 
+                <input type="hidden" id="product_id<?= $cart_row['id'] ?>" value="<?= $cart_row['product_id'] ?>"><a href="product.php?id=<?=$cart_row['product_id']?>"><?= $cart_row['name']; ?>, 
                 <input type="hidden" id="product_size<?= $cart_row['id'] ?>" value="<?= $cart_row['product_size'] ?>"><?php echo $cart_row['product_size']; ?>, 
-                <b><?= $productsrow['price'] ?> €</b>,
+                <b><?= $cart_row['price'] ?> €</b>,
                 <input type="hidden" id="pcs<?= $cart_row['id'] ?>" value="<?= $cart_row['pcs'] ?>">
                 <p id="pcs_answer<?= $cart_row['id'] ?>"><?= $cart_row['pcs']; ?> pcs</p></a>
                 <a type="button" class="plus" id="plus<?= $cart_row['id'] ?>"><i class="fa fa-plus-square-o" aria-hidden="true"></i></a> 
@@ -46,8 +71,8 @@ $title = 'cart';
             </li>
             <hr>
             <?php
-            $sum = ($sum + $productsrow['price']) * $cart_row['pcs'];
-            $taxes = ($taxes + $productsrow['tax']) * $cart_row['pcs'];
+            $sum = ($sum + $cart_row['price']) * $cart_row['pcs'];
+            $taxes = ($taxes + $cart_row['tax']) * $cart_row['pcs'];
             ?>
 
             <script>
@@ -162,7 +187,7 @@ $title = 'cart';
         }
 
         ?>
-        <b>Total sum: <?= $sum ?> € </b><i>(Taxes: <?= $taxes ?> €)</i>
+        <b>Total sum: <?= $sum ?> € </b> (Taxes: <?= $taxes ?> €)
     </ul>
 </body>
 

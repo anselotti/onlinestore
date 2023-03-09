@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('lib/db.php');
+require("lib/class.base.php");
 require('lib/class.cart.php');
 
 // Recieves JSON-data from client
@@ -13,16 +14,20 @@ $product_id = $json["product_id"];
 $product_size = $json["product_size"];
 
 
-$cart = new Cart($product_id, $sql, $session_id, $product_size);
+$cart = new Cart(0, $sql, 'cart');
+$cart->session_id = $session_id;
+$cart->product_id = $product_id;
+$cart->product_size = $product_size;
+$cart->customer_id = $_SESSION['logged_id'];
 
 
-    if ($cart->add()) {
+    if ($cart->addCart()) {
     
-        echo json_encode('');
+        echo json_encode('Done!');
     
     } else {
     
-        echo json_encode('');
+        echo json_encode('Error!');
     
     }
     

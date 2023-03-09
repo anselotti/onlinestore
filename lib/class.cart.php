@@ -1,46 +1,35 @@
 <?php
 session_start();
 
-class Cart {
+class Cart extends Base {
 
     // creating variables
+    public $session_id;
+    public $product_id;
+    public $product_size;
+    public $pcs;
+    public $customer_id;
 
-    protected $id;
-    protected $sql;
-    protected $session_id;
-    protected $product_size;
-    protected $pcs;
+    public function init() {
 
-    public function __construct($id, $sql, $session_id, $product_size, $pcs = null) {
+        $result = $this->sql->query("SELECT * FROM cart WHERE id ='".$this->id."'");
+        $row = $result->fetch_assoc();
 
         // taking variables to use in this object
-        $this->id = $id;
-        $this->sql = $sql;     
-        $this->session_id = $session_id;
-        $this->product_size = $product_size;
-        $this->pcs = $pcs;
+        $this->session_id = $row['session_id'];
+        $this->product_id = $row['product_id'];
+        $this->product_size = $row['product_size'];
+        $this->pcs = $row['pcs'];
+        $this->customer_id = $row['customer_id'];
 
     }
 
-
-
-    // deletes product from cart mysql-table <-- TO DO: code delete to main.class
-    public function delete() : bool {
-
-        
-        if($this->sql->query("DELETE FROM cart WHERE id='".$this->id."'")) {
-            return true;
-        } else {
-            return false;
-        }
-        
-    }
 
     // adds product to cart mysql-table. If a product with this size exists in the cart object checks it and adds one to a pcs column.
-    public function add() : bool {
+    public function addCart() : bool {
         
         // checks how many rows whit given session_id, id and product_size
-        $result = $this->sql->query("SELECT * FROM cart WHERE session_id = '$this->session_id' AND product_id = '$this->id' AND product_size = '$this->product_size'");
+        $result = $this->sql->query("SELECT * FROM cart WHERE (session_id = '$this->session_id' OR customer_id='$this->customer_id') AND product_id = '$this->product_id' AND product_size = '$this->product_size'");
         
         // if there isn't any
         if($result->num_rows < 1) { 
@@ -48,7 +37,7 @@ class Cart {
             // adds one to pcs variable and later inserts into row with all the other variablses.
             $this->pcs++; 
             
-            if ($this->sql->query("INSERT INTO cart (product_id, session_id, product_size, pcs) VALUES ('". $this->id ."', '".$this->session_id. "', '".$this->product_size. "', '".$this->pcs. "')")) {
+            if ($this->sql->query("INSERT INTO cart (product_id, customer_id, session_id, product_size, pcs) VALUES ('". $this->product_id ."', '".$this->customer_id."', '".$this->session_id. "', '".$this->product_size. "', '".$this->pcs. "')")) {
     
                 return true;
     
@@ -64,7 +53,7 @@ class Cart {
             $this->pcs = $row['pcs'];
             $this->pcs++;
 
-            $this->sql->query("UPDATE cart SET pcs = '".$this->pcs."' WHERE session_id = '$this->session_id' AND product_id = '$this->id' AND product_size = '$this->product_size'");
+            $this->sql->query("UPDATE cart SET pcs = '".$this->pcs."' WHERE (session_id = '$this->session_id' OR customer_id ='".$this->customer_id."') AND product_id = '$this->product_id' AND product_size = '$this->product_size'");
             return true;
             
         }
@@ -74,13 +63,18 @@ class Cart {
     public function minus() : bool {
         
          // checks how many rows whit given session_id, id and product_size
-        $result = $this->sql->query("SELECT * FROM cart WHERE session_id = '$this->session_id' AND product_id = '$this->id' AND product_size = '$this->product_size'");
+        $result = $this->sql->query("SELECT * FROM cart WHERE (session_id = '" . $this->session_id ."' OR customer_id='".$this->customer_id."') AND product_id = '" .$this->id."' AND product_size = '".$this->product_size."'");
 
         if($result->num_rows) { 
 
             $row = $result->fetch_assoc(); 
             $this->pcs = $row['pcs'];
             $this->pcs--;
+            
+            // Deletes from cart at all if quantity is 0
+            if ($this->pcs == 0) {
+                $this->sql->query("DELETE FROM cart WHERE (session_id = '" .$this->session_id."' OR customer_id = '".$this->customer_id."') AND product_id = '".$this->id."' AND product_size = '".$this->product_size."'");
+            }
 
             $this->sql->query("UPDATE cart SET pcs = '".$this->pcs."' WHERE session_id = '$this->session_id' AND product_id = '$this->id' AND product_size = '$this->product_size'");
             return true;
@@ -99,7 +93,17 @@ class Cart {
         global $sql;
         
         // Setting all the produts to an array
-        $result = $sql->query("SELECT * FROM cart WHERE pcs > 0 AND session_id='". $this->session_id ."'");
+        if ($_SESSION['logged_id'] == false) {
+
+            $result = $sql->query("SELECT * FROM cart WHERE pcs > 0 AND session_id='". $this->id ."'");
+        }
+
+        if($_SESSION['logged_id'] == true) {
+
+            $result = $sql->query("SELECT * FROM cart WHERE pcs > 0 AND customer_id='". $this->customer_id ."'");
+            
+        }
+        
         $cart_array = [];
 
         // Getting data line by line and pushing it to an array
@@ -108,6 +112,20 @@ class Cart {
 		}
         
         return $cart_array;
+    }
+
+    // adds customer_id to the cart-table
+    public function addCustomerToCart() : bool {
+
+        if ($this->sql->query("UPDATE cart SET customer_id = '".$this->id."' WHERE session_id = '". $this->session_id ."'")) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
     }
 
 }

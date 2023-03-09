@@ -1,6 +1,7 @@
 <?php
 session_start();
 require('lib/db.php');
+require('lib/class.base.php');
 require('lib/class.cart.php');
 
 // Recieves JSON-data from client
@@ -10,7 +11,7 @@ $json = json_decode($json, true);
 
 $cartid = $json["id"];
 
-$cart = new Cart($cartid, $sql, 0, 0);
+$cart = new Cart($cartid, $sql, 'cart');
     
     if ($cart->delete()) {
 

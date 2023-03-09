@@ -48,7 +48,7 @@ $imgurl = $row_p['imgurl'];
           <option value="size" selected>Size</option>
           <!-- Prints sizes what are in the stock -->
           <?php
-          $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $id . "'");
+          $result_sizes = $sql->query("SELECT * FROM stock WHERE product_id = '" . $id . "' AND quantity > 0");
           while ($row_sizes = $result_sizes->fetch_assoc()) {
             var_dump($row_sizes['size']);
             echo '<option value="' . $row_sizes['size'] . '">' . $row_sizes['size'] . '</option>';
@@ -57,7 +57,7 @@ $imgurl = $row_p['imgurl'];
         </select>
         <input id="product_id" value="<?= $id ?>" hidden>
         <input id="session_id" value="<?= $session_id ?>" hidden>
-        <button id="add" type="button" class="btn btn-primary btn-lg px-4 me-md-2">Add to basket</button>
+        <button id="add" type="button" class="btn btn-dark btn-lg">Add to basket</button>
         <p id="answer"></p>
       </div>
     </div>
@@ -74,7 +74,7 @@ $imgurl = $row_p['imgurl'];
   <script>
     var submit = document.getElementById("add");
 
-    submit.onclick = function() {
+    submit.addEventListener("click", function() {
 
       var answer = document.getElementById("answer");
       var product_id = document.getElementById("product_id").value;
@@ -107,10 +107,6 @@ $imgurl = $row_p['imgurl'];
           answer.innerHTML = "";
         });
       }
-    }
-
-    $("#add").click(function() {
-      $("#cart-total").load("cart_total.php");
     });
   </script>
 

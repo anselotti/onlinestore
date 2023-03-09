@@ -121,7 +121,7 @@ if ($cart_total > 0) {
                     </div>
                     <div class="offcanvas-body offcanvas-custom">
                         <div class="list-group" style="width:100%;">
-                            <a href="index.php"><img class="center-image" src="uploads/logo.PNG"></a> 
+                            <a href="index.php"><img class="center-image" src="uploads/logo.png"></a> 
                             <a href="index.php" class="btn btn-dark" style="text-align: left; margin-bottom: 5px;">
                                     <i class="fa fa-home" aria-hidden="true"></i> Home
                             </a>
@@ -213,10 +213,11 @@ if ($cart_total > 0) {
                                     // when then-promise has been succesful parse to json
                                     return response.json();
                                 }).then(function(myJson) {
-                                    // when then-promise has been succesful modal opens 
+                                    // when then-promise has been succesful, reloads page.
                                     if (myJson == '') {
                                         location.reload(true);
                                     } else {
+                                        // returns errors from login.
                                         loginError.innerHTML = myJson;
                                     }
                                     

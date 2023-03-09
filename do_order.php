@@ -9,16 +9,7 @@ require("lib/class.products.php");
 
 $payment = $_POST['payment'];
 $shipping = $_POST['shipping'];
-$shipping_price = 0;
-if($shipping == 'dhl') {
-    $shipping_price = 10;
-}
-
-if($shipping == 'posti') {
-    $shipping_price = 5;
-}
-
-$sum = $_POST['sum'] + $shipping_price;
+$sum = $_POST['sum'];
 $taxes = $_POST['taxes'];
 $notax = $sum - $taxes;
 $customerid = $_SESSION['logged_id'];
@@ -30,9 +21,15 @@ $cart_arr = $cart->getCart();
 $products = new Products(0, $sql);
 $products_arr = $products->getProducts();
 
+if ($payment = 'paypal') {
+    $sql->query("INSERT INTO orders (customer_id, price, price_notax, shipping, payment, status) 
+VALUES ('$customerid', '$sum', '$notax', '$shipping', '$payment', 'paid')");
+} else {
 
 $sql->query("INSERT INTO orders (customer_id, price, price_notax, shipping, payment, status) 
 VALUES ('$customerid', '$sum', '$notax', '$shipping', '$payment', 'invoice sent')");
+
+}
 
 $order_id = $sql->insert_id;
 
@@ -55,17 +52,15 @@ for ($i = 0; $i < count($cart_arr); $i++) {
     }
 }
 
-$sql->query("DELETE FROM cart WHERE session_id = '".$sessionid."'");
-
-// !!! TO DO: DECREASE THE STOCK'S VALUE !!!
-
-
+$sql->query("DELETE FROM cart WHERE session_id = '".$sessionid."' OR customer_id = '".$customerid."'");
+$email = $_SESSION['customer'];
 $sendEmail = "Thank you for the order! This was just a practice project so you will not revieve real invoice and we will not deliever your order.";
 
-if (mail('anssi.kosunen@gmail.com', "Order confirmed", $sendEmail)) {
+
+if (mail($email, "Order confirmed", $sendEmail)) {
     header("Location: confirmation.php");
 } else {
-    echo "Error!";
+    echo 'Error sending email';
 }
 
 

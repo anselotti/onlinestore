@@ -7,7 +7,7 @@ function getStock($id) : string {
     global $sql;
     
     // Setting all the produts from stock to an array where is the given product_id
-    $result = $sql->query("SELECT * FROM stock WHERE product_id = '" . $id . "'");
+    $result = $sql->query("SELECT * FROM stock WHERE product_id = '" . $id . "' and quantity > 0");
 
     // creating counter
     $qty = 0;

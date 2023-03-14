@@ -317,14 +317,19 @@ $customer_id = $_SESSION['logged_id'];
             ?>
 
                 <div class="col-sm-6" style="max-width: 560px">
-                    <h2>Your data</h2>
-                    <?php
-                    if ($_GET['error'] == 3) {
-                        echo '<p style="color: green;">Your data has updated!</p>';
-                    }
-                    ?>
                     <form action="do_modify.php" method="POST" class="row g-3">
-                        <div class="row g-3">
+                    <div class="row g-3">
+                        <h2>Check your data</h2>
+                        <?php
+                        if ($_GET['error'] == 3) {
+                            echo '<p style="padding: 20px; border-radius: 10px; color: white; background-color: #537072;">Your data has updated!</p>';
+                        }
+
+                        if ($_GET['error'] == 5) {
+                            echo '<p style="padding: 20px; border-radius: 10px; color: white; background-color: rgb(122, 47, 47);">Your cart is empty. Please select products to continue payment.</p>';
+                        }
+    
+                        ?>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" name="id" value="<?= $customer_data[0]['id'] ?>" hidden>
                             </div>
@@ -356,37 +361,27 @@ $customer_id = $_SESSION['logged_id'];
                             <div class="col-12">
                                 <button type="submit" class="btn btn-dark" name="submit">Update data</button>
                             </div>
+
                             <h2>Payment method</h2>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="flexRadioDisabled" value="invoice" checked>
-                                <label class="form-check-label" for="flexRadioDisabled">
-                                    Invoice (to email)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="payment" id="flexRadioDisabled" value="paypal">
-                                <label class="form-check-label" for="flexRadioDisabled">
-                                    Credit card or PayPal
-                                </label>
-                            </div>
+                            <input type="radio" class="btn-check" name="payment" id="option1" autocomplete="off" value="invoice" checked>
+                            <label class="btn btn-outline-secondary" for="option1">Invoice</label>
+
+                            <input type="radio" class="btn-check" name="payment" id="option2" autocomplete="off" value="paypal">
+                            <label class="btn btn-outline-secondary" for="option2">Credit card or PayPal</label>
+                            
                             <h2>Shipping method</h2>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="shipping" id="flexRadioDisabled" value="posti" checked>
-                                <label class="form-check-label" for="flexRadioDisabled">
-                                    Posti 5 € (Only in Finland)
-                                </label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="shipping" id="flexRadioCheckedDisabled" value="dhl">
-                                <label class="form-check-label" for="flexRadioCheckedDisabled">
-                                    DHL 10 €
-                                </label>
-                            </div>
+                            <input type="radio" class="btn-check" name="shipping" id="option3" autocomplete="off" value="posti" checked>
+                            <label class="btn btn-outline-secondary" for="option3">Posti 5 € (only in Finland)</label>
+
+                            <input type="radio" class="btn-check" name="shipping" id="option4" autocomplete="off" value="dhl">
+                            <label class="btn btn-outline-secondary" for="option4">DHL 10 €</label>
                             <div class="col-12">
                                 <button formaction="payment.php" type="submit" class="btn btn-dark" name="submit">Continue to payment</button>
-                            </div>
+                            </div>                            
 
-
+                        
+                        
+                    </div>
                     </form>
 
 

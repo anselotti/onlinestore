@@ -15,8 +15,11 @@ $customer_id = $_SESSION['logged_id'];
 <!-- CONTENT STARTS -->
 <div class="col-lg-10" id="content">
     <div class="row" style="padding: 20px;">
-        <h1>Thank you for the order! Invoice has sent to your email.</h1>
-        This was just a practice project so you will not revieve real invoice and we will not deliever your order.
+        <h1>Confirmation</h1>
+        <h2>Confirmation has sent to your email.</h2>
+        <p>This was just a practice project and we will not deliever your order.</p>
+
+        <hr>
 
         <h2>If you still have some money left, check out the latest products...</h2>
 
@@ -31,9 +34,9 @@ $customer_id = $_SESSION['logged_id'];
 
             <div class="col-sm-auto" style="margin: 10px;">
                 <div class="card card-custom" style="width: 18rem; height: 100%;">
-                    <a href="product.php?id=<?= $row['id'] ?>"><img style="width: 100%; " src="<?= $row['imgurl']; ?>" class="card-img-top" alt="<?= $row['short_description'] ?>"></a>
+                    <a href="product.php?id=<?= $row['id'] ?>&category=<?=$row['category']?>"><img style="width: 100%; " src="<?= $row['imgurl']; ?>" class="card-img-top" alt="<?= $row['short_description'] ?>"></a>
                     <div class="card-body">
-                        <a href="product.php?id=<?= $row['id'] ?>">
+                        <a href="product.php?id=<?= $row['id']?>&category=<?=$row['category']?>">
                             <h5 class="card-title"><?= $row['name']; ?></h5>
                         </a>
                     </div>
@@ -70,7 +73,7 @@ $customer_id = $_SESSION['logged_id'];
                             <p class="answer" id="answer<?= $row['id']; ?>">
                                 <!-- Javascript returns "select size" if size is not selected -->
                             </p>
-                            <button class="btn btn-primary" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">To cart</button>
+                            <button class="btn btn-dark" id="add<?= $row['id'] ?>" name="add" type="button" class="card-link">To cart</button>
                         </form>
 
                     </div>

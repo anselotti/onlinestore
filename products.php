@@ -73,9 +73,9 @@ if (!isset($category)) {
 
                 <div class="col-sm-auto" style="margin: 10px;">
                     <div class="card card-custom" style="width: 18rem; height: 100%;">
-                        <img style="width: 100%; " src="<?= $row[$i]['imgurl']; ?>" class="card-img-top" alt="<?= $row[$i]['short_description'] ?>">
+                        <a href="product.php?id=<?= $row[$i]['id']?>&category=<?=$row[$i]['category']?>"><img style="width: 100%; " src="<?= $row[$i]['imgurl']; ?>" class="card-img-top" alt="<?= $row[$i]['short_description'] ?>">
                         <div class="card-body">
-                            <a href="product.php?id=<?= $row[$i]['id']; ?>">
+                            <a href="product.php?id=<?= $row[$i]['id']?>&category=<?=$row[$i]['category']?>">
                                 <h5 class="card-title"><?= $row[$i]['name']; ?></h5>
                             </a>
                         </div>

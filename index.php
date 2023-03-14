@@ -66,9 +66,9 @@ require('templates/header.php');
 
                         <div class="col-sm-auto" style="margin: 10px;">
                             <div class="card card-custom" style="width: 18rem; height: 100%;">
-                                <a href="product.php?id=<?=$row['id']?>"><img style="width: 100%; " src="<?= $row['imgurl']; ?>" class="card-img-top" alt="<?= $row['short_description'] ?>"></a>
+                                <a href="product.php?id=<?=$row['id']?>&category=<?=$row['category']?>"><img style="width: 100%; " src="<?= $row['imgurl']; ?>" class="card-img-top" alt="<?= $row['short_description'] ?>"></a>
                                 <div class="card-body">
-                                    <a href="product.php?id=<?=$row['id']?>">
+                                    <a href="product.php?id=<?=$row['id']?>&category=<?=$row['category']?>">
                                         <h5 class="card-title"><?= $row['name']; ?></h5>
                                     </a>
                                 </div>

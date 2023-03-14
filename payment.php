@@ -12,7 +12,7 @@ $customer_id = $_SESSION['logged_id'];
 
 ?>
 <script src="https://www.paypal.com/sdk/js?client-id=ARpXCFfn-bI4yEf_HRTfd5G6TEtNQqT9pvZVzYV3GQlt2RY3dgHdH16ADjK3td870S1DL65FLbMyHOT8&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
-<script src="script.js" defer></script>
+<script src="lib/script.js" defer></script>
 
 <!-- CONTENT STARTS -->
 <div class="col-lg-10" id="content">

@@ -3,6 +3,7 @@ require("lib/db.php"); // Connection to database
 require('lib/class.base.php');
 require("lib/class.cart.php");
 require("lib/class.customer.php");
+require("lib/class.orders.php");
 require("lib/functions.php");
 
 $cart = new Cart(0, $sql);
@@ -19,6 +20,11 @@ if (
     !strstr($_SERVER["SCRIPT_FILENAME"], 'checkout.php') &&
     !strstr($_SERVER["SCRIPT_FILENAME"], 'index.php')
 ) {
+    header('Location: index.php');
+}
+
+// If a user tries to view another customer's information, the user will be redirected to the index
+if (strstr($_SERVER["SCRIPT_FILENAME"], 'customer.php') && $_GET['id'] != $_SESSION['logged_id']) {
     header('Location: index.php');
 }
 
@@ -43,6 +49,11 @@ if ($cart_total > 0) {
     $cartNumber = 0;
 }
 
+// returns back to checkout-page if cart is empty and customer tries to continue to payment-section
+if (
+    strstr($_SERVER["SCRIPT_FILENAME"], 'payment.php') && $cartNumber == 0) {
+    header('Location: checkout.php?error=5');
+}
 ?>
 
 <html>
@@ -132,19 +143,14 @@ if ($cart_total > 0) {
                                 <div class="collapse<?php if (strstr($_SERVER["SCRIPT_FILENAME"], 'products.php') || strstr($_SERVER["SCRIPT_FILENAME"], 'product.php')) {echo '.show';}?>" id="products-button">
                                         <ul class="nav-list">
                                             <?php
-                                                // when all categories are selected, nav-link style is "active" 
-                                                if (strstr($_SERVER["SCRIPT_FILENAME"], 'products.php') && $_GET['category'] == '') {
-                                                    echo '<li><a href="products.php" style="background-color: #f3efe9; color: #2C4A52;">all products</a></li>';
-                                                } else {
                                                     echo '<li><a href="products.php">all products</a></li>';
-                                                }
                                             ?>
                                             <?php
                                             $menu_categories = allCategories();
                                             // for-loop through the array to print category-buttons
                                             for ($i = 0; $i < count($menu_categories); $i++) {
                                                 // when certain category is selected, nav-link style is "active" 
-                                                if ($_GET['category'] == $menu_categories[$i]['name']) {
+                                                if (strstr($_SERVER["SCRIPT_FILENAME"], 'product.php') && $_GET['category'] == $menu_categories[$i]['name']) {
                                                     echo '<li><a href="products.php?category=' . $menu_categories[$i]['name'] . '" style="background-color: #f3efe9; color: #2C4A52;">' . $menu_categories[$i]['name'] . '</a></li>';
                                                 } else {
                                                 echo '<li><a href="products.php?category=' . $menu_categories[$i]['name'] . '">' . $menu_categories[$i]['name'] . '</a></li>';
@@ -178,7 +184,7 @@ if ($cart_total > 0) {
                                     <i class="fa fa-user" aria-hidden="true"></i> ' . $loggedCustomer[0]['firstname'] . ' ' . $loggedCustomer[0]['lastname'] . '
                                 </button>
                                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1" style="padding: 20px;">
-                                        <li><i class="fa fa-info" aria-hidden="true"></i> <a href="customer.php?id='.$loggedCustomer[0]['id'].'">Personal data</a></li>
+                                        <li><i class="fa fa-info" aria-hidden="true"></i> <a href="customer.php?id='.$loggedCustomer[0]['id'].'">Profile</a></li>
                                         <li><i class="fa fa-sign-out" aria-hidden="true"></i> <a href="logout.php">Log out</a></li>
                                     </ul>
                                 </div>';

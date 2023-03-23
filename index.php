@@ -22,22 +22,22 @@ require('templates/header.php');
                         <div class="carousel-item active">                            
                             <img src="uploads/skate1.jpg" class="d-block w-100" alt="...">
                             <div class="carousel-caption" style="text-align: left;">
-                                <h1 style="font-size: 9vw; color: #f4ebdb;">Welcome</h1>
-                                <p>We are passionate about skateboarding and all things related. </p>
+                                <h1 style="font-size: 8vw; color: #f4ebdb;">Welcome!</h1>
+                                <p class="mobile-p">We are passionate about skateboarding and all things related. </p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <img src="uploads/skate2.jpg" class="d-block w-100" alt="...">
                             <div class="carousel-caption" style="text-align: left;">
-                                <h1 style="font-size: 9vw; color: #f4ebdb;">Skateboards And Clothing</h1>
-                                <p>Here, you will find high-quality skateboards and stylish clothing. </p>
+                                <h1 style="font-size: 8vw; color: #f4ebdb;">Skateboards And Clothing</h1>
+                                <p class="mobile-p">Here, you will find high-quality skateboards and stylish clothing. </p>
                             </div>
                         </div>
                         <div class="carousel-item">
                             <img src="uploads/skate3.jpg" class="d-block w-100" alt="...">
                             <div class="carousel-caption" style="text-align: left;">
-                                <h1 style="font-size: 9vw; color: #f4ebdb;">Stuff For Every Skateboarder</h1>
-                                <p>Whether you're just starting out or you're a seasoned pro, we have everything you need.</p>
+                                <h1 style="font-size: 8vw; color: #f4ebdb;">Stuff For Every Skateboarder</h1>
+                                <p class="mobile-p">Whether you're just starting out or you're a seasoned pro, we have everything you need.</p>
                             </div>
                         </div>
                     </div>
@@ -118,7 +118,8 @@ require('templates/header.php');
                             var submit = document.getElementById("add" + <?= $row['id']; ?>);
 
                             submit.addEventListener("click", function() {
-
+                                
+                                var cartTotal = document.getElementById("cart-total");
                                 var answer = document.getElementById("answer" + <?= $row['id']; ?>);
                                 var product_id = document.getElementById("product_id_" + <?= $row['id']; ?>).value;
                                 var session_id = document.getElementById("session_id_" + <?= $row['id']; ?>).value;
@@ -146,18 +147,13 @@ require('templates/header.php');
                                 }).then(function(myJson) {
                                     // when then-promise has been succesful modal opens
                                     $("#getCode").html(myJson);
-                                    jQuery("#addedModal").modal('show');   
-                                    answer.innerHTML = "";                                              
+                                    jQuery("#addedModal").modal('show');
+                                    cartTotal.innerHTML = myJson;
                                 });
 
                             }
                                 
                             });
-
-                            // Updates cart-icon's total number when content clicked. !!! TO DO: not good code, but gotta find better way
-                            // $("#add" + <?= $row['id'] ?>).click(function() {
-                            //     $("#cart-total").load("cart_total.php");
-                            // });
 
 
 

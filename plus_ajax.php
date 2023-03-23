@@ -14,25 +14,15 @@ $product_id = $json["product_id"];
 $product_size = $json["product_size"];
 
 
-$cart = new Cart($product_id, $sql, 'cart');
-$cart->session_id = $session_id;
+$cart = new Cart(0, $sql, 'cart');
+$cart->session_id = session_id();
 $cart->product_id = $product_id;
 $cart->product_size = $product_size;
 $cart->customer_id = $_SESSION['logged_id'];
 
     if ($cart->addCart()) {
 
-        // checks if customer is logged in
-        if ($_SESSION['logged_id'] == true) {
-
-            $cart_tot = $sql->query("SELECT * FROM cart WHERE customer_id = '" . $customer_id . "' AND product_id = '" . $product_id . "' AND product_size = '" . $product_size . "'");
-
-        } else {
-
-            $cart_tot = $sql->query("SELECT * FROM cart WHERE session_id = '" . $session_id . "' AND product_id = '" . $product_id . "' AND product_size = '" . $product_size . "'");
-        }
-
-        
+        $cart_tot = $sql->query("SELECT * FROM cart WHERE session_id = '" . $session_id . "' AND product_id = '" . $product_id . "' AND product_size = '" . $product_size . "'");        
         $result = $cart_tot->fetch_assoc();
     
         echo json_encode($result['pcs'] . ' pcs');

@@ -100,9 +100,9 @@ if (count($errors) === 0) {
 
     if($customer->login()) {
 
-        $cart = new Cart($_SESSION['logged_id'], $sql);
+        $cart = new Cart(0, $sql);
+        $cart->customer_id = $_SESSION['logged_id'];
         $cart->session_id = session_id();
-        $cart->addCustomerToCart();
 
 
         header("Location: checkout.php");

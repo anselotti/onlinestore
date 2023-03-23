@@ -7,13 +7,18 @@ require("lib/class.products.php");
 
 
 // creating $category so later it is possible to list products with given GET-category name
-$category = $_GET['category'];
+if (isset($_GET['category'])) {
+    $category = $_GET['category'];
+} else {
+    $category = "all";
+}
+
 
 // using getCategory or getProducts object
 $products = new Products(0, $sql, $category);
 
 // if $_GET['category'] has not set, if uses object to get all the products to row
-if (!isset($category)) {
+if (!isset($category) || $category == "all") {
 
     $row = $products->getProducts();
 
@@ -36,10 +41,10 @@ if (!isset($category)) {
         <div class="list-group">
             <?php
             // all products-button is active if category is empty
-            if (strstr($_SERVER["SCRIPT_FILENAME"], 'products.php') && $_GET['category'] == '') {
-                echo '<a href="products.php" class="list-group-item list-group-item-action active" aria-current="true">all products</a>';
+            if (strstr($_SERVER["SCRIPT_FILENAME"], 'products.php') && !isset($_GET['category']) || $_GET['category'] == 'all') {
+                echo '<a href="products.php?category=all" class="list-group-item list-group-item-action active" aria-current="true">all products</a>';
             } else {
-                echo '<a href="products.php" class="list-group-item list-group-item-action" aria-current="true">all products</a>';
+                echo '<a href="products.php?category=all" class="list-group-item list-group-item-action" aria-current="true">all products</a>';
             }
             ?>
             <?php
@@ -49,8 +54,8 @@ if (!isset($category)) {
             // for-loop through the array to print category-buttons
             for ($i = 0; $i < count($categories); $i++) {
                 // category-button is active when proper category is selected
-                if ($_GET['category'] == $menu_categories[$i]['name']) {
-                    echo '<a href="products.php?category=' . $categories[$i]['name'] . '" class="list-group-item list-group-item-action active">' . $menu_categories[$i]['name'] . '</a></li>';
+                if (isset($_GET['category']) && $_GET['category'] == $categories[$i]['name']) {
+                    echo '<a href="products.php?category=' . $categories[$i]['name'] . '" class="list-group-item list-group-item-action active">' . $categories[$i]['name'] . '</a></li>';
                 } else {
                     echo '<a href="products.php?category=' . $categories[$i]['name'] . '" class="list-group-item list-group-item-action">' . $categories[$i]['name'] . '</a>';
                 }
@@ -128,7 +133,7 @@ if (!isset($category)) {
 
                     submit.addEventListener("click", function() {
 
-                        var answer = document.getElementById("answer" + <?= $row[$i]['id']; ?>);
+                        var cartTotal = document.getElementById("cart-total");
                         var product_id = document.getElementById("product_id_" + <?= $row[$i]['id']; ?>).value;
                         var session_id = document.getElementById("session_id_" + <?= $row[$i]['id']; ?>).value;
                         var product_size = document.getElementById("form-select" + <?= $row[$i]['id'] ?>).value;
@@ -156,7 +161,7 @@ if (!isset($category)) {
                                 // when then-promise has been succesful modal opens
                                 $("#getCode").html(myJson);
                                 jQuery("#addedModal").modal('show');
-                                answer.innerHTML = "";
+                                cartTotal.innerHTML = myJson;
                             });
                         }
 

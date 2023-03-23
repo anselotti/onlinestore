@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 class Order extends Base {
 
@@ -35,5 +34,3 @@ class Order extends Base {
     }
 
 }
-
-?>

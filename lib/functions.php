@@ -66,7 +66,3 @@ function allCategories() : array {
 
     return $array;
 }
-
-
-
-?>

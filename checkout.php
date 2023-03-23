@@ -8,7 +8,13 @@ require("lib/class.products.php");
 
 $products = new Products(0, $sql, 0);
 $row = $products->getProducts();
+
+if (isset($_SESSION['logged_id'])) {
+
 $customer_id = $_SESSION['logged_id'];
+
+}
+
 
 
 ?>
@@ -39,9 +45,8 @@ $customer_id = $_SESSION['logged_id'];
                     $sum = 0;
                     $taxes = 0;
 
-                    // takes result to $cart_result. If customer is logged in the result is based on customer_id. If not
+                    // takes result to $cart_result. 
                     // the result is based on session_id.
-                    if ($_SESSION['logged_id'] == false) {
 
                         $cart_result = $sql->query("
                         SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
@@ -49,16 +54,7 @@ $customer_id = $_SESSION['logged_id'];
                         JOIN products ON cart.product_id = products.id
                         WHERE cart.session_id = '$session_id' AND cart.pcs > 0
                     ");
-                    }
 
-                    if ($_SESSION['logged_id'] == true) {
-                        $cart_result = $sql->query("
-                        SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
-                        FROM cart
-                        JOIN products ON cart.product_id = products.id
-                        WHERE cart.customer_id = '$customer_id' AND cart.pcs > 0
-                    ");
-                    }
                     // while loop shows all the added products based on session_id and customer_id.   
                     while ($cart_row = $cart_result->fetch_assoc()) {
 
@@ -199,7 +195,7 @@ $customer_id = $_SESSION['logged_id'];
         </div>
 
         <?php
-        if ($_SESSION['logged_id'] == false) { ?>
+        if (isset($_SESSION['logged_id']) == false) { ?>
             <div class="col-sm-6" style="max-width: 560px">
                 <h2>Your data</h2>
 
@@ -226,29 +222,37 @@ $customer_id = $_SESSION['logged_id'];
                             var email = document.getElementById("emailCheckout").value;
                             var password = document.getElementById("passwordCheckout").value;
 
-                            fetch('do_login.php', {
-                                method: 'POST', // Send as POST
-                                headers: { // Tells headers to the server
-                                    'Accept': 'application/json',
-                                    'Content-Type': 'application/json'
-                                },
-                                body: JSON.stringify({
-                                    email: email,
-                                    password: password
-                                }) // Sending JSON-data to server
-                            }).then(function(response) {
-                                // when then-promise has been succesful parse to json
-                                return response.json();
-                            }).then(function(myJson) {
-                                // when then-promise has been succesful modal opens 
-                                if (myJson == '') {
-                                    location.reload(true);
-                                } else {
-                                    loginError.innerHTML = myJson;
-                                }
+                            if (email == "" || password == "") { // checks empty fields
+
+                                loginError.innerHTML = '<p style="padding: 10px; border-radius: 10px; color: white; background-color: rgb(122, 47, 47);">You cannot leave empty fields.</p>';
+
+                            } else {
+
+                                fetch('do_login.php', {
+                                    method: 'POST', // Send as POST
+                                    headers: { // Tells headers to the server
+                                        'Accept': 'application/json',
+                                        'Content-Type': 'application/json'
+                                    },
+                                    body: JSON.stringify({
+                                        email: email,
+                                        password: password
+                                    }) // Sending JSON-data to server
+                                }).then(function(response) {
+                                    // when then-promise has been succesful parse to json
+                                    return response.json();
+                                }).then(function(myJson) {
+                                    // when then-promise has been succesful modal opens 
+                                    if (myJson == '') {
+                                        location.reload(true);
+                                    } else {
+                                        loginError.innerHTML = myJson;
+                                    }
 
 
-                            });
+                                });
+
+                            }
 
                         }
                     </script>
@@ -293,15 +297,19 @@ $customer_id = $_SESSION['logged_id'];
 
                     <?php
 
+                    if (isset($_SESSION['errors'])) {
 
-                    if (is_array($_SESSION['errors']) && count($_SESSION['errors']) > 0) { // both is_countable and isset works in here
+                        if (is_array($_SESSION['errors']) && count($_SESSION['errors']) > 0) { // both is_countable and isset works in here
 
-                        foreach ($_SESSION['errors'] as $e) {
-                            echo $e . '<br>';
+                            foreach ($_SESSION['errors'] as $e) {
+                                echo $e . '<br>';
+                            }
+    
+                            unset($_SESSION['errors']);
                         }
 
-                        unset($_SESSION['errors']);
                     }
+                    
 
                     ?>
 
@@ -318,18 +326,29 @@ $customer_id = $_SESSION['logged_id'];
 
                 <div class="col-sm-6" style="max-width: 560px">
                     <form action="do_modify.php" method="POST" class="row g-3">
-                    <div class="row g-3">
-                        <h2>Check your data</h2>
-                        <?php
-                        if ($_GET['error'] == 3) {
-                            echo '<p style="padding: 20px; border-radius: 10px; color: white; background-color: #537072;">Your data has updated!</p>';
-                        }
+                        <div class="row g-3">
+                            <h2>Check your data</h2>
+                            <?php
 
-                        if ($_GET['error'] == 5) {
-                            echo '<p style="padding: 20px; border-radius: 10px; color: white; background-color: rgb(122, 47, 47);">Your cart is empty. Please select products to continue payment.</p>';
-                        }
+                            if (isset($_GET['error'])) {
+
+                                if ($_GET['error'] == 3) {
+                                    echo '<p style="padding: 20px; border-radius: 10px; color: white; background-color: #537072;">Your data has updated!</p>';
+                                }
     
-                        ?>
+                                if ($_GET['error'] == 5) {
+                                    echo '<p style="padding: 20px; border-radius: 10px; color: white; background-color: rgb(122, 47, 47);">Your cart is empty. Please select products to continue payment.</p>';
+                                }
+
+                                if ($_GET['error'] == 6) {
+                                    echo '<p style="padding: 20px; border-radius: 10px; color: white; background-color: rgb(122, 47, 47);">You have to accept terms and conditions to continue payment.</p>';
+                                }
+
+
+                            }
+                            
+
+                            ?>
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" name="id" value="<?= $customer_data[0]['id'] ?>" hidden>
                             </div>
@@ -368,28 +387,36 @@ $customer_id = $_SESSION['logged_id'];
 
                             <input type="radio" class="btn-check" name="payment" id="option2" autocomplete="off" value="paypal">
                             <label class="btn btn-outline-secondary" for="option2">Credit card or PayPal</label>
-                            
+
                             <h2>Shipping method</h2>
                             <input type="radio" class="btn-check" name="shipping" id="option3" autocomplete="off" value="posti" checked>
                             <label class="btn btn-outline-secondary" for="option3">Posti 5 € (only in Finland)</label>
 
                             <input type="radio" class="btn-check" name="shipping" id="option4" autocomplete="off" value="dhl">
                             <label class="btn btn-outline-secondary" for="option4">DHL 10 €</label>
+
+                            
+                            <label class="form-check-label" for="flexCheckDefault">
+                            <input class="form-check-input" type="checkbox" name="terms" value="" id="flexCheckDefault">
+                                I accept <a type="button" class="modalbtn" data-bs-toggle="modal" data-bs-target="#termsAndConditions">terms and conditions</a>.                                
+                            </label>
+                            
                             <div class="col-12">
                                 <button formaction="payment.php" type="submit" class="btn btn-dark" name="submit">Continue to payment</button>
-                            </div>                            
+                            </div>
 
-                        
-                        
-                    </div>
+
+
+                        </div>
                     </form>
 
+                    
 
                     <?php
 
 
 
-                    if (is_array($_SESSION['errors']) && count($_SESSION['errors']) > 0) { // both is_countable and isset works in here
+                    if (is_array(isset($_SESSION['errors'])) && count($_SESSION['errors']) > 0) { // both is_countable and isset works in here
 
                         foreach ($_SESSION['errors'] as $e) {
                             echo $e . '<br>';
@@ -409,12 +436,18 @@ $customer_id = $_SESSION['logged_id'];
         }
             ?>
             </div>
-            
+
     </div>
 </div>
 </div>
 </div>
-    </div>
+</div>
+
+<script>
+    if($("#checkSurfaceEnvironment-1").prop('checked') == false){
+    
+}
+</script>
 
 <!-- CONTENT ENDS -->
 

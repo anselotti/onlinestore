@@ -6,9 +6,11 @@ require('templates/header.php');
 require("lib/class.products.php");
 
 
-$products = new Products(0, $sql, 0);
+$products = new Products(0, $sql);
 $row = $products->getProducts();
 $customer_id = $_SESSION['logged_id'];
+
+
 
 ?>
 <script src="https://www.paypal.com/sdk/js?client-id=ARpXCFfn-bI4yEf_HRTfd5G6TEtNQqT9pvZVzYV3GQlt2RY3dgHdH16ADjK3td870S1DL65FLbMyHOT8&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
@@ -44,7 +46,7 @@ $customer_id = $_SESSION['logged_id'];
 
                     <?php
 
-                    $orderedItems = $sql->query("SELECT * FROM cart WHERE customer_id = '" . $customer_id . "'");
+                    $orderedItems = $sql->query("SELECT * FROM cart WHERE session_id = '" . session_id() . "'");
 
                     $sum = 0;
                     $taxes = 0;
@@ -86,6 +88,7 @@ $customer_id = $_SESSION['logged_id'];
 
             </table>
             Shipping: <?= $_POST['shipping'] ?>, <?= $shipping_price ?> € <br>
+            Payment: <?= $_POST['payment'] ?><br>
             <b>Total sum: <?= $sum ?> € </b>(Taxes: <?= $taxes ?> €)
             <?php
                 if($_POST['payment'] == 'paypal') { ?>

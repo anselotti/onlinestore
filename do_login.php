@@ -23,23 +23,19 @@ $customer->password = $password;
 if($customer->login()) {
 
     // setting customer_id to the cart
-    $cart = new Cart($_SESSION['logged_id'], $sql);
+    $cart = new Cart(0, $sql);
+    $cart->customer_id = $_SESSION['logged_id'];
     $cart->session_id = $session_id;
 
     
-    if ($cart->addCustomerToCart()) {
+    $cart->addCustomerToCart();
 
-        echo json_encode("");
+    echo json_encode("");
 
-    } else {
-
-        echo json_encode("Email and password do not match.");
-
-    }
 
 } else {
 
-    echo json_encode("Error with login. Please try again later.");
+    echo json_encode('<p style="padding: 10px; border-radius: 10px; color: white; background-color: rgb(122, 47, 47);">Email and password do not match.</p>');
 
 }
 

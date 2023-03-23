@@ -1,0 +1,4 @@
+käyttöehdot pitää hyväksyä ennen kuin pääsee eteen päin.
+
+
+koko sivun leveynen kartta firman väreillä footeriin. Pointteri vihreäksi.

@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 class Products {
 
@@ -54,5 +53,3 @@ class Products {
     }
 
 }
-
-?>

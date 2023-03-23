@@ -75,8 +75,8 @@ $imgurl = $row_p['imgurl'];
     var submit = document.getElementById("add");
 
     submit.addEventListener("click", function() {
-
-      var answer = document.getElementById("answer");
+      
+      var cartTotal = document.getElementById("cart-total");
       var product_id = document.getElementById("product_id").value;
       var session_id = document.getElementById("session_id").value;
       var product_size = document.getElementById("form-select").value;
@@ -104,7 +104,7 @@ $imgurl = $row_p['imgurl'];
           // when then-promise has been succesful modal opens
           $("#getCode").html(myJson);
           jQuery("#addedModal").modal('show');
-          answer.innerHTML = "";
+          cartTotal.innerHTML = myJson;
         });
       }
     });

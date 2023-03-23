@@ -14,16 +14,24 @@ $product_id = $json["product_id"];
 $product_size = $json["product_size"];
 
 
-$cart = new Cart(0, $sql, 'cart');
+$cart = new Cart(0, $sql);
 $cart->session_id = $session_id;
 $cart->product_id = $product_id;
 $cart->product_size = $product_size;
-$cart->customer_id = $_SESSION['logged_id'];
-
 
     if ($cart->addCart()) {
+
+        $cartproducts = $cart->getCart();
+
+        $cart_total = 0;
+
+        for ($i = 0; $i < count($cartproducts); $i++) {
+
+            $cart_total += $cartproducts[$i]['pcs'];
+
+        }
     
-        echo json_encode('Done!');
+        echo json_encode($cart_total);
     
     } else {
     
@@ -31,5 +39,6 @@ $cart->customer_id = $_SESSION['logged_id'];
     
     }
     
+?>
 
 

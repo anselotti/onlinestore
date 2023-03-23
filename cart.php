@@ -31,30 +31,15 @@ $title = 'cart';
         $sum = 0;
         $taxes = 0;
 
-        // takes all the products from cart based on session_id when customer is not logged in
-        if ($_SESSION['logged_id'] == false) {
-
-            $cart_products = $sql->query("
+        // takes all the products from cart
+        $cart_products = $sql->query("
             SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
             FROM cart
             JOIN products ON cart.product_id = products.id
             WHERE cart.session_id = '$session_id' AND cart.pcs > 0
-        ");
-
-        } 
+        ");   
         
-        // takes all the products from cart based on customer_id when customer is logged in
-        if ($_SESSION['logged_id'] == true) {
-            $cart_products = $sql->query("
-            SELECT cart.id, cart.product_id, cart.product_size, cart.pcs, products.name, products.price, products.tax
-            FROM cart
-            JOIN products ON cart.product_id = products.id
-            WHERE cart.customer_id = '$customer_id' AND cart.pcs > 0
-        ");
-        }
-    
         
-
         while ($cart_row = $cart_products->fetch_assoc()) {
              ?>
 
@@ -127,7 +112,8 @@ $title = 'cart';
                         return response.json();
                     }).then(function(myJson) {
                         // when then-promise has been succesful prints json
-                        pcs_answer.innerHTML = myJson;                                                   
+                        pcs_answer.innerHTML = myJson;
+                        total = total + 1;                                                   
                     });
                     
                 }
@@ -158,7 +144,8 @@ $title = 'cart';
                         return response.json();
                     }).then(function(myJson) {
                         // when then-promise has been succesful prints json
-                        pcs_answer2.innerHTML = myJson;                                                  
+                        pcs_answer2.innerHTML = myJson;    
+                        total = total - 1;                                              
                     });
 
                     }
@@ -167,19 +154,15 @@ $title = 'cart';
                 $("#delete-item" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
                     $("#answer" + <?= $cart_row['product_id']; ?>).empty(); // cleans the answer-div
-                    // updates cart-button number
-                    $("#cart-total").load("cart_total.php");
                 });
 
                 // updates cart-button number
                 $("#plus" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
-                    $("#cart-total").load("cart_total.php");
                 });
                 // updates cart-button number
                 $("#minus" + <?= $cart_row['id'] ?>).click(function() {
                     $("#cartcontent").load("cart.php");
-                    $("#cart-total").load("cart_total.php");
                 });
 
             </script>
